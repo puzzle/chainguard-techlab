@@ -10,7 +10,7 @@
 # Die Codeowner werden über ihre Puzzle-Email identifiziert.
 # Damit ist es einfacher zu bestimmen, wer gemeint ist.
 # Mehrere Codeowner können in einer Liste referenziert werden:
-*       example1@puzzle.ch example2@puzzle.ch
+*       raaflaub@puzzle.ch seeger@puzzle.ch
 
 # Soll für ein Teil des Repos spezifisch ein anderer Owner gesetzt werden,
 # geht das auch, und spätere Matches überschreiben vorherige Matches.
