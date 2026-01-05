@@ -1,0 +1,29 @@
+{
+  "name": "chainguard-techlab-module",
+  "engineVersion": "v0.18.0",
+  "sdk": {
+    "source": "go"
+  },
+  "dependencies": [
+    {
+      "name": "hello",
+      "source": "github.com/shykes/chainguardverse/hello@54d86c6002d954167796e41886a47c47d95a626d",
+      "pin": "54d86c6002d954167796e41886a47c47d95a626d"
+    },
+    {
+      "name": "openssh-server",
+      "source": "github.com/sagikazarmark/chainguardverse/openssh-server@c767a220a5f507555fd415e9c9729234589fd95c",
+      "pin": "c767a220a5f507555fd415e9c9729234589fd95c"
+    },
+    {
+      "name": "ruff",
+      "source": "github.com/chainguard/chainguard/dev/ruff@d9a15262229f1dba0aa53dbd0216908438331995",
+      "pin": "d9a15262229f1dba0aa53dbd0216908438331995"
+    },
+    {
+      "name": "wolfi",
+      "source": "github.com/shykes/chainguardverse/wolfi@3338120927f8e291c4780de691ef63a7c9d825c0",
+      "pin": "3338120927f8e291c4780de691ef63a7c9d825c0"
+    }
+  ]
+}
