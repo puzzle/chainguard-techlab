@@ -9,6 +9,7 @@ description: >
 
 ## Getting started with Chainguard
 
+For this techlab it is necessary to install chainctl, if you are using Chainguard for your company however, it is best practise to set up a pull-through-cache with the registry of your choice.
 
 ### Log into Puzzle Partner Account
 
@@ -24,17 +25,71 @@ Chainguard’s ´chainctl´ command-line interface provides essential tools for 
 
 For more information on chainctl, see [CGDocs](https://edu.chainguard.dev/chainguard/chainctl-usage/how-to-install-chainctl/).
 
+To begin with, we are creating a temporary directory and moving into it, by executing
+
+´´´
+mkdir ~/tmp && cd $_
+´´´
+
 #### Linux
+
+To install chainctl via curl by executing
+
+´´´
+curl -o chainctl "https://dl.enforce.dev/chainctl/latest/chainctl_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/aarch64/arm64/')"
+´´´
+
+Move chainctl into your /usr/local/bin directory and elevate its permissions so that it can execute as needed.
+
+´´´
+sudo install -o $UID -g $(id -g) -m 0755 chainctl /usr/local/bin/ 
+´´´
+
+And you are finshed, jump to verifying your installation :)
+
+#### Homebrew for Mac or Linux
+
+It is required that [Xcode Command Line Tools](https://mac.install.guide/commandlinetools/) is installed to install chainctl via Homebrew.
+
+You can do that by running the following command:
+
+´´´
+xcode-select --install
+´´´
+Before installing chainctl with Homebrew, use brew tap to bring in Chainguard’s repositories.
+
+´´´
+brew tap chainguard-dev/tap
+´´´
+Next, install chainctl with Homebrew.
+
+´´´
+brew install chainctl
+´´´
+
+And you are finshed, jump to verifying your installation :)
 
 #### Windows
 
-#### Mac
+To download the executional file, run the following command:
 
+´´´
+curl -o chainctl.exe https://dl.enforce.dev/chainctl/latest/chainctl_windows_x86_64.exe
+´´´
+
+And you are finshed, please be aware, that that Windows PowerShell does not load commands from the working directory by default so you will need to include .\ before any chainctl commands you run, as in this example.
+
+´´´
+.\chainctl auth login
+´´´
 
 ### Verifying installation and first steps
 
+Check if chainctl is installed correctly by running:
 
-
+´´´
+chainctl version
+´´´
 
 Set Puzzle org as default:
 
@@ -42,7 +97,7 @@ Set Puzzle org as default:
 chainctl config set default.group puzzle-partner.com
 ```
 
-#### Auth
+#### Authentication
 
 Check that you have the `owner` role in https://console.chainguard.dev/.
 This is needed to be able to pull images and libraries.
@@ -61,3 +116,15 @@ chainctl auth login
 ```
 
 Browser should open and do auth.
+
+### Updating chainctl
+
+Did you install chainctl a while ago and need to update it?
+
+Just run
+
+```bash
+sudo chainctl update
+```
+
+And make sure you are signed in as described in "Verifying installation and first steps".

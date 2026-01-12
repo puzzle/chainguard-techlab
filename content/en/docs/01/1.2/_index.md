@@ -8,6 +8,8 @@ description: >
 
 ## Different Chainguard images
 
-Chainguard offers 
+Chainguard offers container images, virtual machine (VM) images, helm charts and libraries.
+
+Container images
 
 
