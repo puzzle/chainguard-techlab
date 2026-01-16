@@ -12,7 +12,10 @@ Chainguard offers container images, virtual machine (VM) images, helm charts and
 
 ### Container images
 
-Chainguard offers a wide variety of container images. Let's check out the different types:
+
+
+Chainguard offers a wide variety of container images. 
+Let's check out the different types:
 
 ##### FIPS images
 
@@ -32,3 +35,15 @@ If the image has the "-iamguarded" in its name, it is composed to be a base imag
 Image Tags stay the same as official version, but "digest" might update to account for security patches.
 when the image tag version is bumped, the previous security patches are either amended or rebased on the new commit.
 
+
+##### dev images
+
+![Chainguard dev container image](dev.png)
+
+The dev image version can be found as an additional tagged version.
+
+This image version includes a few more tools (like a shell), that will help you with the work on your dev stage.
+
+Busy Box as default
+shell
+groupadd/useradd -> addgroup, adduser
