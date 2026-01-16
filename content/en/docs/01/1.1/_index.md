@@ -24,6 +24,11 @@ Therefore, many of them accumulate CVEs (common vulnerabiities and exposures).
 
 ## How does Chainguard help?
 
-Chainguard has a shift left approach, providing daily updated images with ~0 CVEs.
+An innovative solution to this problem relies on a fundamentally different approach to building container images. The key lies in providing minimal, secure operating systems, such as Wolfi, developed by Chainguard.
+
+A wide variety of open source images are created on this minimal foundation. These images contain only the building blocks needed to build the software. The upstream code is compiled from scratch every day. This allows the latest versions of all dependencies to be integrated and ensures complete documentation. This allows the latest versions of all dependencies to be integrated and ensures complete documentation.  Complete SBOMs (Software Bill of Materials) are also provided, which contain clear evidence and origin information for each image. The images are tested for consistent behavior and rebuilt daily. The result of this process is container images with ∼0 CVEs.
+
+The Chainguard catalog includes over 1800 secure alternatives to common open source images. Beyond container images, the catalog is continuously expanding and now also includes libraries (beta) and VM images (early access). Chainguard also offers solutions for replacing images that are no longer freely available and Helm charts from Bitnami and Minio.
+
 
 

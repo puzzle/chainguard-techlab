@@ -6,6 +6,8 @@ sectionnumber: 2.1
 
 ## Container images - Drop-in replacements
 
+### Check for Chainguard images
+
 Many container images for infrastructure applications are build to be drop-in replacements to their open-source counter parts. 
 Let's try this out:
 
@@ -34,3 +36,6 @@ List `python` image tags that we can use at Puzzle:
 chainctl images list --repo=python
 ```
 
+### Replace image
+
+### Test image

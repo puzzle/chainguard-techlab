@@ -1,7 +1,10 @@
 ---
-title: "2. Chainguard CLI"
+title: "2. Chainguard Container Images"
 weight: 2
 sectionnumber: 2
 description: >
-  How to use the Chainguard CLI and the Chainguard Shell.
+  Test Migrations of Container Images.
 ---
+
+
+How to use the Chainguard CLI and the Chainguard Shell 
