@@ -6,7 +6,7 @@ package main
 
 import (
 	"context"
-	"chainguard/workflows/internal/chainguard"
+	"dagger/workflows/internal/dagger"
 	"fmt"
 	"strings"
 )
@@ -16,7 +16,7 @@ type Workflows struct{}
 // Get the Hugo Image tag
 func (m *Workflows) HugoTag(
 	ctx context.Context,
-	src *chainguard.Directory,
+	src *dagger.Directory,
 ) (string, error) {
 	return dag.Container().
 		From("alpine:latest").
@@ -29,8 +29,8 @@ func (m *Workflows) HugoTag(
 // Prepares the local dev container with the given source.
 func (m *Workflows) LocalDev(
 	ctx context.Context,
-	src *chainguard.Directory,
-) (*chainguard.Container, error) {
+	src *dagger.Directory,
+) (*dagger.Container, error) {
 	tag,err := m.HugoTag(ctx, src)
 	if err != nil {
 		return nil, err
@@ -38,7 +38,7 @@ func (m *Workflows) LocalDev(
 	from := strings.TrimSpace(fmt.Sprintf("docker.io/floryn90/hugo:%s", tag))
 	container := dag.Container().
 		From(from).
-		WithMountedDirectory("/src", src, chainguard.ContainerWithMountedDirectoryOpts{Owner: "hugo"}).
+		WithMountedDirectory("/src", src, dagger.ContainerWithMountedDirectoryOpts{Owner: "hugo"}).
 		WithExposedPort(8080)
 	return container, nil
 }
@@ -46,21 +46,21 @@ func (m *Workflows) LocalDev(
 // Builds and runs Hugo from the given source.
 func (m *Workflows) LocalStart(
 	ctx context.Context,
-	src *chainguard.Directory,
-) (*chainguard.Service, error) {
+	src *dagger.Directory,
+) (*dagger.Service, error) {
 	container, err := m.LocalDev(ctx, src)
 	if err != nil {
 		return nil, err
 	}
 	service := container.
-		AsService(chainguard.ContainerAsServiceOpts{Args: []string{"hugo", "server", "-p", "8080"}})
+		AsService(dagger.ContainerAsServiceOpts{Args: []string{"hugo", "server", "-p", "8080"}})
 	return service, nil
 }
 
 // Runs lint on the given source.
 func (m *Workflows) Lint(
 	ctx context.Context,
-	src *chainguard.Directory,
+	src *dagger.Directory,
 ) (string, error) {
 	tag,err := m.HugoTag(ctx, src)
 	if err != nil {
@@ -69,7 +69,7 @@ func (m *Workflows) Lint(
 	from := strings.TrimSpace(fmt.Sprintf("docker.io/floryn90/hugo:%s", tag))
 	return dag.Container().
 		From(fmt.Sprintf("%s-ci", from)).
-		WithMountedDirectory("/mnt", src, chainguard.ContainerWithMountedDirectoryOpts{Owner: "hugo"}).
+		WithMountedDirectory("/mnt", src, dagger.ContainerWithMountedDirectoryOpts{Owner: "hugo"}).
 		WithWorkdir("/mnt").
 		WithExec([]string{"/bin/bash", "-c", "npm install && npm run mdlint"}).
 		Stdout(ctx)
