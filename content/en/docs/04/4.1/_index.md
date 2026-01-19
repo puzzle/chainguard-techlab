@@ -25,9 +25,5 @@ Ecosystem Library Entitlements for puzzle-partner.com (337c8d93f34ada9c0f59aa998
  337c8d93f34ada9c0f59aa998aa2234aca10f7d7/37e80f06263e0662 | JAVA
  337c8d93f34ada9c0f59aa998aa2234aca10f7d7/4a3dbce6fc6d2a1a | PYTHON
 ```
- 
+
 This means, that we have access to [Chainguard libraries](https://www.chainguard.dev/libraries) for Java, JavaScript and python.
-
-
-
-

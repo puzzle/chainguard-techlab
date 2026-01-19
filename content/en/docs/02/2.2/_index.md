@@ -8,11 +8,11 @@ sectionnumber: 2.2
 
 Adapt Dockerfile
 
-- switch to apk
-- user permission ID no longer root, uid=65532
-- images set entrypoint explicitly (in python image the entrypoint is python)
-    ´docker run-it python´
-    ´docker run -it python echo "in a shell"´
-- Busy Box as default
-- groupadd/useradd -> addgroup, adduser
-- entrypoints may be different
+* switch to apk
+* user permission ID no longer root, uid=65532
+* images set entrypoint explicitly (in python image the entrypoint is python)
+  * ´docker run-it python´
+  * ´docker run -it python echo "in a shell"´
+* Busy Box as default
+* groupadd/useradd -> addgroup, adduser
+* entrypoints may be different

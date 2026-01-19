@@ -10,22 +10,25 @@ description: >
 
 Chainguard offers container images, virtual machine (VM) images, helm charts and libraries.
 
+
 ### Container images
 
-Chainguard offers a wide variety of container images. 
+Chainguard offers a wide variety of container images.
 Let's check out the different types:
 
-##### FIPS images
+
+#### FIPS images
 
 ![Chainguard library FIPS container image](fips.png)
 
 In the image directory of Chainguard some images are tagged with ´FIPS validated´. These images comply strict cryptographic requirements to be used for the U.S. federal agencies, defense contractors, and regulated industries.
 
-##### iamguarded images
+
+#### iamguarded images
 
 ![Chainguard library iamguarded container image](iamguarded.png)
 
-If the image has the "-iamguarded" in its name, it is composed to be a base image for a Helm Chart. 
+If the image has the "-iamguarded" in its name, it is composed to be a base image for a Helm Chart.
 
 
 #### Tags and Digests
@@ -35,6 +38,7 @@ While the images are rebuild nightly, the image tags (for example ´jenkins:2.54
 ![Digests of jenkins latest](digests.png)
 
 When the official image tag version is increased, the previous security patches are either amended or rebased on the new tag version. Keeping the Chainguard image en par with the official updates but still patching the security vulnerabilities.
+
 
 ##### dev images
 

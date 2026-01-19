@@ -11,13 +11,15 @@ description: >
 
 For this techlab it is necessary to install chainctl, if you are using Chainguard for your company however, it is best practise to set up a pull-through-cache with the registry of your choice.
 
+
 ### Log into Puzzle Partner Account
 
-Enter Chainguard partner console, by going to the [Chainguard Image Directory](https://images.chainguard.dev/), clicking the "sign in" button in the upper right corner and sign-in with the puzzle email address (Google). 
+Enter Chainguard partner console, by going to the [Chainguard Image Directory](https://images.chainguard.dev/), clicking the "sign in" button in the upper right corner and sign-in with the puzzle email address (Google).
 
 You now should be able to see the [Puzzle Partner space](https://console.chainguard.dev/org/puzzle-partner.com/overview).
 
 If you don't have a Puzzle mail address, or for more information see [PDoc](https://docs.puzzle.ch/user-guides/chainguard-user-guide/index.html#_getting_started).
+
 
 ### Install chainctl
 
@@ -31,6 +33,7 @@ To begin with, we are creating a temporary directory and moving into it, by exec
 mkdir ~/tmp && cd $_
 ´´´
 
+
 #### Linux
 
 To install chainctl via curl by executing
@@ -42,10 +45,11 @@ curl -o chainctl "https://dl.enforce.dev/chainctl/latest/chainctl_$(uname -s | t
 Move chainctl into your /usr/local/bin directory and elevate its permissions so that it can execute as needed.
 
 ´´´
-sudo install -o $UID -g $(id -g) -m 0755 chainctl /usr/local/bin/ 
+sudo install -o $UID -g $(id -g) -m 0755 chainctl /usr/local/bin/
 ´´´
 
 And you are finshed, jump to verifying your installation :)
+
 
 #### Homebrew for Mac or Linux
 
@@ -69,6 +73,7 @@ brew install chainctl
 
 And you are finshed, jump to verifying your installation :)
 
+
 #### Windows
 
 To download the executional file, run the following command:
@@ -83,6 +88,7 @@ And you are finshed, please be aware, that that Windows PowerShell does not load
 .\chainctl auth login
 ´´´
 
+
 ### Verifying installation and first steps
 
 Check if chainctl is installed correctly by running:
@@ -96,6 +102,7 @@ Set Puzzle org as default:
 ```bash
 chainctl config set default.group puzzle-partner.com
 ```
+
 
 #### Authentication
 
@@ -116,6 +123,7 @@ chainctl auth login
 ```
 
 Browser should open and do auth.
+
 
 ### Updating chainctl
 
