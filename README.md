@@ -114,12 +114,12 @@ podman run --rm --rmi --publish 8080:8080 localhost/puzzle/chainguard-techlab
 ## How to develop locally
 
 
-### Chainguard
+### Dagger
 
 Start Hugo with the local content:
 
 ```bash
-chainguard -m workflows/ call local-start --src . up --ports 8080:8080
+dagger -m workflows/ call local-start --src . up --ports 8080:8080
 ```
 
 
