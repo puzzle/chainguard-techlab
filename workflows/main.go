@@ -13,6 +13,16 @@ import (
 
 type Workflows struct{}
 
+// Create the dev container
+func (m *Workflows) BaseContainer(
+	ctx context.Context,
+	// location of directory containing Dockerfile
+	src *dagger.Directory,
+) *dagger.Container {
+	return src.
+		DockerBuild()
+}
+
 // Get the Hugo Image tag
 func (m *Workflows) HugoTag(
 	ctx context.Context,
