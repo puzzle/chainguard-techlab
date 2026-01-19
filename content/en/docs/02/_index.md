@@ -7,4 +7,4 @@ description: >
 ---
 
 
-How to use the Chainguard CLI and the Chainguard Shell 
+How to use the Chainguard CLI and the Chainguard Shell when migrating container images to Chainguard.

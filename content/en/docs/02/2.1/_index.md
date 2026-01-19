@@ -38,6 +38,6 @@ chainctl images list --repo=python
 
 ### Replace image
 
-
+What image should we use? infra structure app but easy to check...
 
 ### Test image

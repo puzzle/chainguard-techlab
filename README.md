@@ -1,11 +1,11 @@
 # Chainguard Techlab
 
-This guided hands-on training helps chainguard.io newbies to get started. It also provides information and labs for more advanced topics.
+This guided hands-on training helps Chainguard newbies to get started with the migration of different images.
 
 
 ## Techlab last given
 
-27.03.2025
+not given yet
 
 
 ## Content Sections

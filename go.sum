@@ -1,0 +1,8 @@
+github.com/FortAwesome/Font-Awesome v4.7.0+incompatible h1:3trjm7NtX5NXlju1AxSWSzedDMq2hsfH78Qtqrc8EgY=
+github.com/FortAwesome/Font-Awesome v4.7.0+incompatible/go.mod h1:IUgezN/MFpCDIlFezw3L8j83oeiIuYoj28Miwr/KUYo=
+github.com/acend/docsy-plus v1.2.0 h1:MJaMdkqXU6ws7A+6Lzhx4qGvncifund3NF44Tzs7iVM=
+github.com/acend/docsy-plus v1.2.0/go.mod h1:LPbI0Ljrhzt0YHUg8qozWVUXjrMVI1cFVPn3TyQxbcY=
+github.com/puzzle/docsy-puzzle v0.0.0-20250822081608-44bcd465abfa h1:4amMzQUQSvdVACV2GbnD2TlYEgVwu6igAynW1KWwqZ8=
+github.com/puzzle/docsy-puzzle v0.0.0-20250822081608-44bcd465abfa/go.mod h1:q4bPnnpLaz5IDdFmQFxCHr85uwAsK9ayut5NNmC4w3I=
+github.com/twbs/bootstrap v5.3.8+incompatible h1:eK1fsXP7R/FWFt+sSNmmvUH9usPocf240nWVw7Dh02o=
+github.com/twbs/bootstrap v5.3.8+incompatible/go.mod h1:fZTSrkpSf0/HkL0IIJzvVspTt1r9zuf7XlZau8kpcY0=

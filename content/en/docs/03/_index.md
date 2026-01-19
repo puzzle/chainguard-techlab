@@ -6,8 +6,7 @@ description: >
   Test Migrations of Helm Images.
 ---
 
-
-
 ## Helm Charts
 
+As Helm charts aren't available for free yet, we will describe the migration in theory.
 
