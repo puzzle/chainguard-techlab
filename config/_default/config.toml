@@ -121,9 +121,9 @@ url = "https://linkedin.com/company/puzzle-itc"
   [[module.imports]]
     path = "github.com/acend/docsy-plus"
     disable = false
-  #[[module.imports]]
-  #  path = "github.com/google/docsy"
-  #  disable = false
-  #[[module.imports]]
-  #  path = "github.com/google/docsy/dependencies"
-  #  disable = false
+  [[module.imports]]
+    path = "github.com/google/docsy"
+    disable = false
+  [[module.imports]]
+    path = "github.com/google/docsy/dependencies"
+    disable = false
