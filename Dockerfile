@@ -1,4 +1,4 @@
-FROM docker.io/floryn90/hugo:0.146.6-ext-ubuntu AS builder
+FROM docker.io/floryn90/hugo:0.138.0-ext-ubuntu AS builder
 
 ARG TRAINING_HUGO_ENV=default
 
@@ -17,7 +17,7 @@ RUN apt-get update \
 
 COPY --from=builder /src/public /
 
-RUN wkhtmltopdf --outline-depth 4 \
+RUN wkhtmltopdf --enable-internal-links --enable-local-file-access \
     --margin-top 35mm --margin-bottom 22mm --margin-left 15mm --margin-right 10mm \
     --enable-internal-links --enable-local-file-access \
     --header-html /pdf/header/index.html --footer-html /pdf/footer/index.html \
