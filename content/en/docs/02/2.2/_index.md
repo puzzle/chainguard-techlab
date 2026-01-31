@@ -16,3 +16,6 @@ Adapt Dockerfile
 * Busy Box as default
 * groupadd/useradd -> addgroup, adduser
 * entrypoints may be different
+
+Migration Checlist: https://edu.chainguard.dev/chainguard/migration/migration-checklist/
+Converter: https://edu.chainguard.dev/chainguard/migration/dockerfile-conversion/
