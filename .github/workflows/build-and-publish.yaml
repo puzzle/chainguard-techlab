@@ -28,20 +28,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Set up npm for linting
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 'latest'
+          node-version: '23.x'
       - name: Cache npm dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Cache node_modules
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: node_modules
           key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
@@ -50,7 +50,6 @@ jobs:
       - name: Lint Markdown
         run: npm ci && npm run mdlint
 
-
   build_push_image:
     runs-on: ubuntu-latest
     needs: lint
@@ -58,7 +57,7 @@ jobs:
       digest: ${{ steps.build-push.outputs.digest }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Set up QEMU
@@ -77,7 +76,9 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
+          sbom: true
           push: true
+          provenance: mode=min
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.BUILD_VERSION }}
           cache-from: type=gha
@@ -96,7 +97,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Install cosign
-        uses: sigstore/cosign-installer@v3.8.2
+        uses: sigstore/cosign-installer@v3.10.1
         with:
           cosign-release: 'v2.2.4'
       - name: Sign Docker image with cosign
@@ -113,7 +114,7 @@ jobs:
       digest: ${{ needs.sign_image.outputs.digest }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           sparse-checkout: |
             scripts
@@ -126,7 +127,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Install cosign
-        uses: sigstore/cosign-installer@v3.8.2
+        uses: sigstore/cosign-installer@v3.10.1
         with:
           cosign-release: 'v2.2.4'
       - name: Verify Docker image with cosign
@@ -143,7 +144,7 @@ jobs:
       KUBE_CONFIG_FILENAME: 'config'
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           sparse-checkout: |
             helm-chart
@@ -151,27 +152,21 @@ jobs:
           sparse-checkout-cone-mode: false
           fetch-depth: 0
       - name: 'Install Helm'
-        uses: azure/setup-helm@v4
+        uses: azure/setup-helm@v5
         with:
           version: 'latest'
-      - name: Install Kubectl
-        uses: azure/setup-kubectl@v4
-        with:
-          version: 'latest'
-      - name: Create KUBECONFIG
+      - name: Deploy techlab website
         env:
           KUBE_CONFIG: ${{ secrets[env.DEPLOY_SECRET_VARIABLE_NAME] }}
-        run: bash ./scripts/create_kubeconfig.sh
-      - name: Deploy Helm Release
-        env:
           HELM_RELEASE: ${{ env.BUILD_VERSION }}
           NAMESPACE: ${{ env.NAMESPACE_NAME }}
-        run: bash ./scripts/deploy_helm_release.sh
-      - name: Redeploy Deployments
-        env:
-          HELM_RELEASE: ${{ env.BUILD_VERSION }}
-          NAMESPACE: ${{ env.NAMESPACE_NAME }}
-        run: bash ./scripts/redeploy_deployment.sh
+        run: |
+          echo "Create KUBECONFIG"
+          ./scripts/create_kubeconfig.sh
+          echo "Deploy Helm Release"
+          ./scripts/deploy_helm_release.sh
+          echo "Redeploy Deployments"
+          ./scripts/redeploy_deployment.sh
 
   comment:
     if: github.ref != 'refs/heads/main'
