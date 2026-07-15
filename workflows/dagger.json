@@ -1,7 +1,0 @@
-{
-  "name": "workflows",
-  "engineVersion": "v0.19.9",
-  "sdk": {
-    "source": "go"
-  }
-}

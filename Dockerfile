@@ -1,4 +1,5 @@
-FROM docker.io/floryn90/hugo:0.138.0-ext-ubuntu AS builder
+# Build hugo site
+FROM docker.io/floryn90/hugo:0.154.5-ext-ubuntu AS builder
 
 ARG TRAINING_HUGO_ENV=default
 
@@ -6,6 +7,7 @@ COPY . /src
 
 RUN hugo --environment ${TRAINING_HUGO_ENV} --minify
 
+# build pdf
 FROM docker.io/ubuntu:noble AS wkhtmltopdf
 RUN apt-get update \
     && apt-get install -y curl \
@@ -23,7 +25,8 @@ RUN wkhtmltopdf --enable-internal-links --enable-local-file-access \
     --header-html /pdf/header/index.html --footer-html /pdf/footer/index.html \
     /pdf/index.html /pdf.pdf
 
-FROM docker.io/nginxinc/nginx-unprivileged:1.29-alpine
+# build runtime container
+FROM docker.io/nginxinc/nginx-unprivileged:1.31-alpine
 
 LABEL maintainer="Puzzle ITC <https://www.puzzle.ch/>"
 LABEL org.opencontainers.image.authors="Puzzle ITC <https://www.puzzle.ch/>"
