@@ -1,5 +1,5 @@
 ---
-title: "2.1 Container images - Drop-in replacements"
+title: "2.1 Drop-in replacements"
 weight: 21
 sectionnumber: 2.1
 ---
