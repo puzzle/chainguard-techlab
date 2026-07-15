@@ -15,6 +15,12 @@ The training content resides within the [content](content) directory.
 The main part are the labs, which can be found at [content/en/docs](content/en/docs).
 
 
+## Local prerequisites
+
+* Node version 23
+* [Hugo](https://gohugo.io/installation/) version 0.138.0
+
+
 ## Hugo
 
 This site is built using the static page generator [Hugo](https://gohugo.io/).
@@ -99,7 +105,7 @@ docker run --rm -p 8080:8080 puzzle/chainguard-techlab
 Build the image:
 
 ```bash
-buildah build-using-dockerfile [--build-arg TRAINING_HUGO_ENV=...] -t puzzle/chainguard-techlab .
+buildah build-using-dockerfile -t puzzle/chainguard-techlab .
 ```
 
 Run it locally:
@@ -116,24 +122,25 @@ podman run --rm --rmi --publish 8080:8080 localhost/puzzle/chainguard-techlab
 
 ### Docker Compose
 
-You can use `docker-compose`. If you prefer Podman check out [podman-compose](https://github.com/containers/podman-compose).
+You can use `docker compose`. If you prefer Podman check out [podman-compose](https://github.com/containers/podman-compose).
 
 ```bash
-docker-compose up
+docker compose up
 ```
 
 Use the following command to set the hugo environment
 
 ```bash
-HUGO_ENVIRONMENT="something" docker-compose up
+HUGO_ENVIRONMENT="something" docker compose up
 ```
 
 To rebuild the image if something changed in the `Dockerfile`:
 
 ```bash
-docker-compose up --build
+docker compose up --build
 ```
 
+The website is available at [localhost:8080](http://localhost:8080)
 
 **Tip:** Set the following environment variables for faster builds: `DOCKER_BUILDKIT=1 COMPOSE_DOCKER_CLI_BUILD=1`
 
@@ -144,15 +151,15 @@ To develop locally we don't want to rebuild the entire container image every tim
 We simply mount the working directory into a running container, where hugo is started in the server mode.
 
 ```bash
-export HUGO_VERSION=$(grep "FROM docker.io/floryn90/hugo" Dockerfile | sed 's/FROM docker.io\/floryn90\/hugo://g' | sed 's/ AS builder//g')
-docker run --rm --publish 8080:8080 -v $(pwd):/src docker.io/floryn90/hugo:${HUGO_VERSION} server -p 8080
+export HUGO_VERSION=$(grep "FROM docker.io/klakegg/hugo" Dockerfile | sed 's/FROM docker.io\/klakegg\/hugo://g' | sed 's/ AS builder//g')
+docker run --rm --publish 8080:8080 -v $(pwd):/src docker.io/klakegg/hugo:${HUGO_VERSION} server -p 8080
 ```
 
 Use the following command to set the hugo environment
 
 ```bash
-export HUGO_VERSION=$(grep "FROM docker.io/floryn90/hugo" Dockerfile | sed 's/FROM docker.io\/floryn90\/hugo://g' | sed 's/ AS builder//g')
-docker run --rm --publish 8080:8080 -v $(pwd):/src docker.io/floryn90/hugo:${HUGO_VERSION} server --environment=<environment> -p 8080
+export HUGO_VERSION=$(grep "FROM docker.io/klakegg/hugo" Dockerfile | sed 's/FROM docker.io\/klakegg\/hugo://g' | sed 's/ AS builder//g')
+docker run --rm --publish 8080:8080 -v $(pwd):/src docker.io/klakegg/hugo:${HUGO_VERSION} server --environment=<environment> -p 8080
 ```
 
 
@@ -171,8 +178,8 @@ npm run mdlint
 Npm not installed? no problem
 
 ```bash
-export HUGO_VERSION=$(grep "FROM docker.io/floryn90/hugo" Dockerfile | sed 's/FROM docker.io\/floryn90\/hugo://g' | sed 's/ AS builder//g')
-docker run --rm -v $(pwd):/src docker.io/floryn90/hugo:${HUGO_VERSION}-ci /bin/bash -c "npm install && npm run mdlint"
+export HUGO_VERSION=$(grep "FROM docker.io/klakegg/hugo" Dockerfile | sed 's/FROM docker.io\/klakegg\/hugo://g' | sed 's/ AS builder//g')
+docker run --rm -v $(pwd):/src docker.io/klakegg/hugo:${HUGO_VERSION}-ci /bin/bash -c "npm install && npm run mdlint"
 ```
 
 Automatically fix errors if possible:
