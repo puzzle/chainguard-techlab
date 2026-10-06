@@ -8,7 +8,7 @@ sectionnumber: 5.3
 
 Now we will also use Chainguard Libraries.
 
-The [CG doc](https://edu.chainguard.dev/chainguard/libraries/access/) states following to get access to the [Java libraries](https://edu.chainguard.dev/chainguard/libraries/java/overview/):
+The [CG doc](https://edu.chainguard.dev/chainguard/libraries/access/) states the following to get access to the [Java libraries](https://edu.chainguard.dev/chainguard/libraries/java/overview/):
 
 ```bash
 chainctl auth pull-token --repository=java --parent=puzzle-partner.com --ttl=8670h

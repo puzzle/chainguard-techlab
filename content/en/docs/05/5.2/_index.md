@@ -64,8 +64,8 @@ docker run -ti --entrypoint /bin/sh my-spring-cg
 java -jar ./build/libs/spring-boot-0.0.1-SNAPSHOT.jar
 ```
 
-You shold get an error.
-The images are minimal and hardened. This to keep the attack surface as small as possible.
+You should get an error.
+The images are minimal and hardened, to keep the attack surface as small as possible.
 
 
 Run container:
