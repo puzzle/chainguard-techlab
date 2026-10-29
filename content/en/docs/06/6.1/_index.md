@@ -1,7 +1,7 @@
 ---
-title: "1.4 Pull-through cache"
-weight: 14
-sectionnumber: 1.4
+title: "6.1 Pull-through cache"
+weight: 61
+sectionnumber: 6.1
 description: >
   Using Chainguard images through your own registry.
 ---

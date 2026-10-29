@@ -8,7 +8,7 @@ sectionnumber: 2.3
 
 Chainguard images are built to have as few known vulnerabilities (CVEs) as possible. Every image is signed and comes with a build-time SBOM (Software Bill of Materials). The signatures and SBOMs are created with [Sigstore](https://www.sigstore.dev/) and can be verified with `cosign`.
 
-In this lab we scan the images from lab 2.2, verify the signature of a Chainguard image and download its SBOM.
+In this lab we scan the images from [lab 2.2](/docs/02/2.2/), verify the signature of a Chainguard image and download its SBOM.
 
 
 ### Install the tools
@@ -30,7 +30,7 @@ We also use [jq](https://jqlang.org/) to format JSON output.
 
 ### Scan images
 
-Scan the upstream image and the Chainguard image from lab 2.2:
+Scan the upstream image and the Chainguard image from [lab 2.2](/docs/02/2.2/):
 
 ```bash
 grype python-app:upstream

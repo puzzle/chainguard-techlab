@@ -254,4 +254,4 @@ docker inspect --format '{{.Config.User}}' python-app:upstream
 docker inspect --format '{{.Config.User}}' python-app:cg
 ```
 
-We will compare the vulnerabilities of both images in the next lab.
+We will compare the vulnerabilities of both images in the [next lab](/docs/02/2.3/).

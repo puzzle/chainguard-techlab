@@ -46,7 +46,7 @@ docker buildx imagetools inspect cgr.dev/chainguard/python:latest
 
 The digests and tags of the images of our organization are also shown in the [Chainguard console](https://console.chainguard.dev/).
 
-Pin the base images in `Dockerfile.cg` from lab 2.2 with the digest:
+Pin the base images in `Dockerfile.cg` from [lab 2.2](/docs/02/2.2/) with the digest:
 
 ```Dockerfile
 FROM cgr.dev/chainguard/python:latest-dev@sha256:<digest> AS builder
