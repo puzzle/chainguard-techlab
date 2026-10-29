@@ -55,7 +55,7 @@ docker pull cgr.dev/chainguard/git:latest-glibc
 ```
 If you don't specify a tag, docker will pull the latest image. Also please note, that not all images are available for this workshop.
 
-One can also pull specific image digests, the advantage of this being reproducibility, as it will ensure that you are using the same image each time (versus the tag that may receive updates, see [section 1.2](/docs/01/1.2/)).
+One can also pull specific image digests, the advantage of this being reproducibility, as it will ensure that you are using the same image each time (versus the tag that may receive updates, see [section 1.3](/docs/01/1.3/)).
 A specific digest can be pulled via this docker command:
 
 ```bash
