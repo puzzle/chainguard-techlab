@@ -1,5 +1,5 @@
 ---
-title: "1.4 Prerequesites"
+title: "1.4 Prerequisites"
 weight: 14
 sectionnumber: 1.4
 description: >
@@ -12,18 +12,9 @@ description: >
 For this techlab it is necessary to install chainctl, if you are using Chainguard for your company however, it is best practice to set up a pull-through cache with the registry of your choice (see [lab 6.1](/docs/06/6.1/)).
 
 
-### Log into Puzzle Partner Account
-
-Enter Chainguard partner console, by going to the [Chainguard Image Directory](https://images.chainguard.dev/), clicking the "sign in" button in the upper right corner and sign-in with the puzzle email address (Google).
-
-You now should be able to see the [Puzzle Partner space](https://console.chainguard.dev/org/puzzle-partner.com/overview).
-
-If you don't have a Puzzle mail address, or for more information see [PDoc](https://docs.puzzle.ch/user-guides/chainguard-user-guide/index.html#_getting_started).
-
-
 ### Install chainctl
 
-Chainguard’s ´chainctl´ command-line interface provides essential tools for managing your container security infrastructure, including image management, identity and access control, and resource monitoring. This CLI enables automation of Chainguard operations and integration with CI/CD pipelines.
+Chainguard’s `chainctl` command-line interface provides essential tools for managing your container security infrastructure, including image management, identity and access control, and resource monitoring. This CLI enables automation of Chainguard operations and integration with CI/CD pipelines.
 
 For more information on chainctl, see [CGDocs](https://edu.chainguard.dev/chainguard/chainctl-usage/how-to-install-chainctl/).
 
@@ -48,7 +39,7 @@ Move chainctl into your /usr/local/bin directory and elevate its permissions so 
 sudo install -o $UID -g $(id -g) -m 0755 chainctl /usr/local/bin/
 ```
 
-And you are finshed, jump to verifying your installation :)
+And you are finished, jump to verifying your installation :)
 
 
 #### Homebrew for Mac or Linux
@@ -60,36 +51,38 @@ You can do that by running the following command:
 ```bash
 xcode-select --install
 ```
+
 Before installing chainctl with Homebrew, use brew tap to bring in Chainguard’s repositories.
 
 ```bash
 brew tap chainguard-dev/tap
 ```
+
 Next, install chainctl with Homebrew.
 
 ```bash
 brew install chainctl
 ```
 
-And you are finshed, jump to verifying your installation :)
+And you are finished, jump to verifying your installation :)
 
 
 #### Windows
 
-To download the executional file, run the following command:
+To download the executable file, run the following command:
 
 ```bash
 curl -o chainctl.exe https://dl.enforce.dev/chainctl/latest/chainctl_windows_x86_64.exe
 ```
 
-And you are finshed, please be aware, that that Windows PowerShell does not load commands from the working directory by default so you will need to include .\ before any chainctl commands you run, as in this example.
+And you are finished, please be aware, that Windows PowerShell does not load commands from the working directory by default so you will need to include .\ before any chainctl commands you run, as in this example.
 
 ```bash
-.\chainctl auth login
+.\chainctl version
 ```
 
 
-### Verifying installation and first steps
+### Verifying installation
 
 Check if chainctl is installed correctly by running:
 
@@ -97,32 +90,33 @@ Check if chainctl is installed correctly by running:
 chainctl version
 ```
 
-Set Puzzle org as default:
+
+### Authentication
+
+For this techlab, you log in with an identity provided by the lab instructor. You will receive an identity ID and an identity token.
+
+Set them as environment variables:
 
 ```bash
-chainctl config set default.group puzzle-partner.com
+export CHAINGUARD_IDENTITY_ID=<identity-id>
+export CHAINGUARD_IDENTITY_TOKEN=<identity-token>
 ```
 
-
-#### Authentication
-
-Check that you have the `owner` role in https://console.chainguard.dev/.
-This is needed to be able to pull images and libraries.
-
-Have latest [chainctl](https://edu.chainguard.dev/chainguard/chainctl/chainctl-docs/chainctl/) installed, run:
+Log in with chainctl:
 
 ```bash
-chainctl update`
-rm -f /home/craaflaub/.cache/chainctl/chainctl.bak
+chainctl auth login --identity "$CHAINGUARD_IDENTITY_ID" --identity-token "$CHAINGUARD_IDENTITY_TOKEN"
 ```
 
-Chainctl login to Chainguard console:
+Check that you are logged in:
 
 ```bash
-chainctl auth login
+chainctl auth status
 ```
 
-Browser should open and do auth.
+{{% alert title="Note" color="info" %}}
+The identity and its token are only valid for the duration of the techlab. If you want to explore Chainguard on your own afterwards, create a personal account as described in [lab 1.2](/docs/01/1.2/) and log in with `chainctl auth login`.
+{{% /alert %}}
 
 
 ### Updating chainctl
@@ -135,4 +129,4 @@ Just run
 sudo chainctl update
 ```
 
-And make sure you are signed in as described in "Verifying installation and first steps".
+And make sure you are logged in as described in "Authentication".
