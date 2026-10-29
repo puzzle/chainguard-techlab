@@ -22,10 +22,10 @@ This lab is optional and requires a registry in which you can configure a proxy 
 
 ### Create a pull token
 
-The registry needs credentials to pull from `cgr.dev`. Create a pull token for our organization:
+The registry needs credentials to pull from `cgr.dev`. Create a pull token for your organization, replace `<your-organization>` with the name of your Chainguard organization:
 
 ```bash
-chainctl auth pull-token --parent=puzzle-partner.com --ttl=720h
+chainctl auth pull-token create --parent=<your-organization> --ttl=720h
 ```
 
 The command prints a username and a password. Store them safely, they are needed in the next step.
@@ -50,7 +50,7 @@ Example with Harbor:
 3. Pull the image through the project:
 
 ```bash
-docker pull <harbor-host>/<project>/puzzle-partner.com/python:latest
+docker pull <harbor-host>/<project>/<your-organization>/python:latest
 ```
 
 Guides for the different registries can be found in the [Chainguard documentation](https://edu.chainguard.dev/chainguard/chainguard-registry/pull-through-guides/).

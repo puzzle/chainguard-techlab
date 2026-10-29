@@ -11,12 +11,12 @@ Now we will also use Chainguard Libraries.
 The [CG doc](https://edu.chainguard.dev/chainguard/libraries/access/) states the following to get access to the [Java libraries](https://edu.chainguard.dev/chainguard/libraries/java/overview/):
 
 ```bash
-chainctl auth pull-token --repository=java --parent=puzzle-partner.com --ttl=8670h
+chainctl auth pull-token --repository=java --parent=chainguard.dev-partners --ttl=8670h
 ```
 
 We will use the eval command that will set the needed env vars:
 ```bash
-eval $(chainctl auth pull-token --output env --repository=java --parent=puzzle-partner.com)
+eval $(chainctl auth pull-token --output env --repository=java --parent=chainguard.dev-partners)
 ```
 
 Check the Gradle build configuration (`initial/build.gradle`) for dependencies.
@@ -81,7 +81,7 @@ Stop the app with ctrl+c
 Now we can verify the usage of Chainguard libraries inside our Java app:
 
 ```bash
-chainctl libraries verify --detailed --parent=puzzle-partner.com ./build/libs/spring-boot-0.0.1-SNAPSHOT.jar
+chainctl libraries verify --detailed --parent=chainguard.dev-partners ./build/libs/spring-boot-0.0.1-SNAPSHOT.jar
 ```
 
 Official documentation: https://edu.chainguard.dev/chainguard/libraries/verification/

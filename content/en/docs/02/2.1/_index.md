@@ -12,29 +12,29 @@ sectionnumber: 2.1
 Many container images for infrastructure applications are build to be drop-in replacements to their open-source counter parts.
 Let's try this out!
 
-List Puzzle repos:
+List the repos of the default organization:
 
 ```bash
 chainctl images repos list
 ```
 
-To set the puzzle org as default you can use this command:
+To list the repos of a specific organization, use the `--parent` flag:
 
 ```bash
-chainctl images repos list --parent=puzzle-partner.com
+chainctl images repos list --parent=chainguard.dev-partners
 ```
 
 Should show something like this:
 
 ```bash
-[cgr.dev/puzzle-partner.com]
+[cgr.dev/chainguard.dev-partners]
 ├ [adoptium-jdk]
 ├ [adoptium-jre]
 ├ [curl]
 ...
 ```
 
-List `python` image tags that we can use at Puzzle:
+List `python` image tags that we can use in the lab organization:
 
 ```bash
 chainctl images list --repo=python

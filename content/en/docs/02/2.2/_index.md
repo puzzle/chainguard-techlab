@@ -167,10 +167,10 @@ Or with Go:
 go install github.com/chainguard-dev/dfc@latest
 ```
 
-Convert the `Dockerfile` and print the result. With `--org` we tell dfc to use the images of our Puzzle organization:
+Convert the `Dockerfile` and print the result. With `--org` we tell dfc to use the images of the lab organization `chainguard.dev-partners`:
 
 ```bash
-dfc --org puzzle-partner.com ./Dockerfile
+dfc --org chainguard.dev-partners ./Dockerfile
 ```
 
 Compare the output with the original `Dockerfile`:

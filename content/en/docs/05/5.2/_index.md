@@ -8,13 +8,13 @@ sectionnumber: 5.2
 
 Go to the [Chainguard console](https://console.chainguard.dev/) and search for a Java image.
 
-The `Organization` tab shows all images that we can use at Puzzle. Thanks to our Chainguard partnership.
+The `Organization` tab shows all images that we can use in the lab organization `chainguard.dev-partners`.
 The `Chainguard catalog` tab shows all Chainguard Images. We can ask Chainguard to provide us with images from their catalog such that they are available in our org.
 
 Test Chainguard base image candidate and get infos:
 
 ```bash
-docker run -ti cgr.dev/puzzle-partner.com/jdk:openjdk-21 /bin/sh
+docker run -ti cgr.dev/chainguard.dev-partners/jdk:openjdk-21 /bin/sh
 
 # execute inside the image:
 
@@ -37,11 +37,11 @@ Change the greetings inside `src/main/java/com/example/springboot/HelloControlle
 Create the `Containerfile.cg` file inside `gs-spring-boot/initial` with following content:
 
 ```Dockerfile
-FROM cgr.dev/puzzle-partner.com/jdk:openjdk-21 AS build
+FROM cgr.dev/chainguard.dev-partners/jdk:openjdk-21 AS build
 COPY . .
 RUN ./gradlew build
 
-FROM cgr.dev/puzzle-partner.com/jre:openjdk-21
+FROM cgr.dev/chainguard.dev-partners/jre:openjdk-21
 COPY --from=build /home/build/./build/libs/spring-boot-0.0.1-SNAPSHOT.jar /home/build/
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/home/build/spring-boot-0.0.1-SNAPSHOT.jar"]

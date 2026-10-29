@@ -11,13 +11,13 @@ description: >
 To show which libraries you have access to, paste this in your CLI:
 
 ```bash
-chainctl libraries entitlements list --parent=puzzle-partner.com
+chainctl libraries entitlements list --parent=chainguard.dev-partners
 ```
 
 Should show something like this:
 
 ```bash
-Ecosystem Library Entitlements for puzzle-partner.com (337c8d93f34ada9c0f59aa998aa2234aca10f7d7)
+Ecosystem Library Entitlements for chainguard.dev-partners (337c8d93f34ada9c0f59aa998aa2234aca10f7d7)
 
                             ID                             | ECOSYSTEM  
 -----------------------------------------------------------|------------

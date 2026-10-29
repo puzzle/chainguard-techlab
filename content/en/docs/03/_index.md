@@ -22,7 +22,7 @@ chainctl auth configure-docker --pull-token --save --ttl=24h
 
     With which location is the pull token associated?      
                                                            
-    [puzzle-partner.com] puzzle-partner.com images catalog.
+    [chainguard.dev-partners] chainguard.dev-partners images catalog.
   > └ [iamguarded-charts]                                  
 
  export HELMUSER=
@@ -33,5 +33,5 @@ helm registry login cgr.dev \
   --username=$HELMUSER \
   --password=$HELMPASS
   
-helm template oci://cgr.dev/puzzle-partner.com/iamguarded-charts/kafka
+helm template oci://cgr.dev/chainguard.dev-partners/iamguarded-charts/kafka
 ```
