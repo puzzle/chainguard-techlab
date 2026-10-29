@@ -1,6 +1,6 @@
 ---
 title: "3. Chainguard Helm Charts"
-weight: 2
+weight: 3
 sectionnumber: 3
 description: >
   Test Migrations of Helm Charts.

@@ -1,7 +1,7 @@
 ---
-title: "4. Chainguard Libraries"
-weight: 2
-sectionnumber: 4.
+title: "4.1 Chainguard Libraries"
+weight: 41
+sectionnumber: 4.1
 description: >
   Test Migrations of Libraries.
 ---

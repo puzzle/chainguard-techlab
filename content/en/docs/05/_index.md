@@ -1,7 +1,7 @@
 ---
 title: "5. Application Migration to Chainguard"
-weight: 2
-sectionnumber: 2
+weight: 5
+sectionnumber: 5
 description: >
   Build an application and migrate it to Chainguard Images and Libs.
 ---

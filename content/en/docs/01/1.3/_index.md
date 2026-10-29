@@ -9,7 +9,7 @@ description: >
 
 ## Getting started with Chainguard
 
-For this techlab it is necessary to install chainctl, if you are using Chainguard for your company however, it is best practise to set up a pull-through-cache with the registry of your choice.
+For this techlab it is necessary to install chainctl, if you are using Chainguard for your company however, it is best practice to set up a pull-through cache with the registry of your choice (see lab 1.4).
 
 
 ### Log into Puzzle Partner Account
