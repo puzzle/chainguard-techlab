@@ -78,8 +78,10 @@ docker run -ti --entrypoint /bin/bash my-spring-jdk
 java -jar /spring-boot-0.0.1-SNAPSHOT.jar
 ```
 
+You should see log messages for a successful started application.
+
 {{% alert title="Note" color="primary" %}}
-Exit the container with `ctrl+d`
+Exit the container with `ctrl+c` and `ctrl+d`
 {{% /alert %}}
 
 

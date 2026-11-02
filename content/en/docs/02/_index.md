@@ -97,19 +97,23 @@ chainctl version
 
 ### Authentication
 
-For this techlab, you log in with an identity provided by the lab instructor. You will receive an identity ID and an identity token.
+For this techlab, you need a Chainguard account.
 
-Set them as environment variables:
+TODO
 
-```bash
-export CHAINGUARD_IDENTITY_ID=<identity-id>
-export CHAINGUARD_IDENTITY_TOKEN=<identity-token>
-```
+* click on invite link
+* enter email address of invite
+* create account
+* enter code from email
+* 2fa
+* any name for company
+* join org (use invite code from invite)
+* you should see `chainguard.dev-partners` org
 
 Log in with chainctl:
 
 ```bash
-chainctl auth login --identity "$CHAINGUARD_IDENTITY_ID" --identity-token "$CHAINGUARD_IDENTITY_TOKEN"
+chainctl auth login
 ```
 
 Check that you are logged in:
@@ -121,6 +125,19 @@ chainctl auth status
 {{% alert title="Note" color="primary" %}}
 The identity and its token are only valid for the duration of the techlab. If you want to explore Chainguard on your own afterwards, create a personal account as described in [lab 1.2](/docs/01/1.2/) and log in with `chainctl auth login`.
 {{% /alert %}}
+
+
+#### Docker
+
+To access the Chainguard Images a docker login to the Chainguard registry has to be done.
+
+Authenticate to the Chainguard registry with:
+
+```bash
+chainctl auth configure-docker
+```
+
+You should get a `Login Succeeded` message.
 
 
 ### Updating chainctl

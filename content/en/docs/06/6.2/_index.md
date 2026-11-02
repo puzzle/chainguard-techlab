@@ -6,15 +6,19 @@ sectionnumber: 6.2
 
 ## App - the Chainguard way
 
-Go to the [Chainguard console](https://console.chainguard.dev/) and search for a Java image.
+Go to the [Chainguard console](https://console.chainguard.dev/) and click on the `Images` menu:
 
 The `Organization` tab shows all images that we can use in the lab organization `chainguard.dev-partners`.
-The `Chainguard catalog` tab shows all Chainguard Images. We can ask Chainguard to provide us with images from their catalog such that they are available in our org.
 
-Test Chainguard base image candidate and get infos:
+The `Chainguard catalog` tab shows all Chainguard Images.
+
+Search for a JDK (Java) image.
+
+
+Test the found Chainguard base image candidate (`jdk`) and get infos:
 
 ```bash
-docker run -ti cgr.dev/chainguard.dev-partners/jdk:openjdk-21 /bin/sh
+docker run -ti cgr.dev/chainguard.dev-partners/jdk:openjdk-17 /bin/sh
 
 # execute inside the image:
 
@@ -28,8 +32,12 @@ pwd
 java -version
 ```
 
-As we see, this image runs as user `java` inside `/home/build` and has java version 21.
+As we see, this image runs as user `java` inside `/home/build` and has java version 17.
 As you know, running as root in production is a no-go. OpenShift will also prevent the container from starting.
+
+{{% alert title="Note" color="primary" %}}
+Exit the container with `ctrl+d`
+{{% /alert %}}
 
 Change the greetings inside `src/main/java/com/example/springboot/HelloController.java` to `Greetings from Chainguard!`.
 
