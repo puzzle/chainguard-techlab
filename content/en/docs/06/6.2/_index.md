@@ -55,7 +55,9 @@ Build:
 docker build -t my-spring-cg -f Containerfile.cg .
 ```
 
+{{% alert title="Note" color="primary" %}}
 Attention: Clean local build and .gradle files if you encounter file permission problems.
+{{% /alert %}}
 
 
 Test app inside container:
@@ -77,4 +79,6 @@ Open your browser at http://localhost:8080/
 
 You should see: `Greetings from Chainguard!`
 
-Stop contaier with ctrl+c
+{{% alert title="Note" color="primary" %}}
+Stop the container with `ctrl+c`
+{{% /alert %}}

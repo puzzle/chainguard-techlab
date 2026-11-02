@@ -102,7 +102,9 @@ In a second terminal check the application:
 curl http://localhost:8080/
 ```
 
-Stop the container with `ctrl+c`.
+{{% alert title="Note" color="primary" %}}
+Stop the container with `ctrl+c`
+{{% /alert %}}
 
 
 ### Entrypoints
@@ -146,7 +148,7 @@ apk --version
 exit
 ```
 
-{{% alert title="Note" color="info" %}}
+{{% alert title="Note" color="primary" %}}
 Our `Dockerfile` uses `CMD ["python", "app.py"]`. With the Chainguard image this results in `python python app.py`, because `python` is already the entrypoint. Use `ENTRYPOINT` instead of `CMD`, or only pass the arguments, for example `CMD ["app.py"]`.
 {{% /alert %}}
 
@@ -236,7 +238,9 @@ In a second terminal check the application again:
 curl http://localhost:8080/
 ```
 
-Stop the container with `ctrl+c`.
+{{% alert title="Note" color="primary" %}}
+Stop the container with `ctrl+c`
+{{% /alert %}}
 
 
 ### Compare the images

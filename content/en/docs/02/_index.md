@@ -75,7 +75,11 @@ To download the executable file, run the following command:
 curl -o chainctl.exe https://dl.enforce.dev/chainctl/latest/chainctl_windows_x86_64.exe
 ```
 
-And you are finished, please be aware, that Windows PowerShell does not load commands from the working directory by default so you will need to include .\ before any chainctl commands you run, as in this example.
+And you are finished.
+
+{{% alert title="Note" color="primary" %}}
+Windows PowerShell does not load commands from the working directory by default, so you need to include `.\` before any chainctl commands you run, as in this example.
+{{% /alert %}}
 
 ```bash
 .\chainctl version
@@ -114,7 +118,7 @@ Check that you are logged in:
 chainctl auth status
 ```
 
-{{% alert title="Note" color="info" %}}
+{{% alert title="Note" color="primary" %}}
 The identity and its token are only valid for the duration of the techlab. If you want to explore Chainguard on your own afterwards, create a personal account as described in [lab 1.2](/docs/01/1.2/) and log in with `chainctl auth login`.
 {{% /alert %}}
 

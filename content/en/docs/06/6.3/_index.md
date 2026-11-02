@@ -75,7 +75,9 @@ Open your browser at http://localhost:8080/
 
 You should see: `Greetings from Chainguard!`
 
-Stop the app with ctrl+c
+{{% alert title="Note" color="primary" %}}
+Stop the app with `ctrl+c`
+{{% /alert %}}
 
 
 Now we can verify the usage of Chainguard libraries inside our Java app:

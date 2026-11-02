@@ -30,7 +30,7 @@ chainctl auth pull-token create --parent=<your-organization> --ttl=720h
 
 The command prints a username and a password. Store them safely, they are needed in the next step.
 
-{{% alert title="Note" color="info" %}}
+{{% alert title="Note" color="primary" %}}
 Choose the TTL of the token according to your requirements and renew the token before it expires.
 {{% /alert %}}
 

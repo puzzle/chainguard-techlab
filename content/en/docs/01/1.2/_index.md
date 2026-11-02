@@ -43,7 +43,7 @@ To use the Chainguard Console you need an account. With the free **Catalog Start
 4. Complete the form and click **Submit**
 5. Click **Select images** and choose up to five images, for example `python`
 
-{{% alert title="Note" color="info" %}}
+{{% alert title="Note" color="primary" %}}
 The image selection of the Catalog Starter plan is fixed and cannot be changed later. FIPS images are not included. See [Catalog Starter](https://www.chainguard.dev/docs/chainguard/containers/reference/catalog-starter) for all limits.
 {{% /alert %}}
 
@@ -104,7 +104,7 @@ Explore the tabs and answer the following questions:
 * Which packages does the **SBOM** list? Is there a shell included?
 * Select an older version in the **Vulnerabilities** tab. Are there any findings?
 
-{{% alert title="Note" color="info" %}}
+{{% alert title="Note" color="primary" %}}
 Most `latest` versions show no vulnerabilities, so you may need to select an older version to see findings.
 {{% /alert %}}
 

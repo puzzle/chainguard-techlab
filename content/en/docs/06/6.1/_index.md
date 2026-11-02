@@ -38,13 +38,17 @@ pwd
 java -version
 ```
 
-As we see, this image runs as user `root` inside root `/` and has java version 21.
+As we see, this image runs as user `root` inside root folder `/` and has java version 21.
+
+{{% alert title="Note" color="primary" %}}
+Exit the container with `ctrl+d`
+{{% /alert %}}
 
 
 Create the `Containerfile.jdk` file inside `gs-spring-boot/initial` with following content:
 
 ```Dockerfile
-FROM docker.io/eclipse-temurin:21-jdk-ubi9-minimal AS build
+FROM docker.io/eclipse-temurin:17-jdk-ubi9-minimal AS build
 # user: root!
 COPY . .
 RUN ./gradlew build
@@ -63,7 +67,9 @@ Build image (includes app build):
 docker build -t my-spring-jdk -f Containerfile.jdk .
 ```
 
+{{% alert title="Note" color="primary" %}}
 Attention: Clean local build and .gradle files if you encounter file permission problems.
+{{% /alert %}}
 
 
 Test app inside container:
@@ -72,7 +78,9 @@ docker run -ti --entrypoint /bin/bash my-spring-jdk
 java -jar /spring-boot-0.0.1-SNAPSHOT.jar
 ```
 
-Exit with ctrl+d
+{{% alert title="Note" color="primary" %}}
+Exit the container with `ctrl+d`
+{{% /alert %}}
 
 
 Run container:
@@ -84,4 +92,6 @@ Open your browser at http://localhost:8080/
 
 You should see: `Greetings from Spring Boot!`
 
-Stop container with ctrl+c
+{{% alert title="Note" color="primary" %}}
+Stop the container with `ctrl+c`
+{{% /alert %}}

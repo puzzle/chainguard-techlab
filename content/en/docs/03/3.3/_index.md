@@ -55,7 +55,7 @@ To only show vulnerabilities for which a fix is available, use:
 grype python-app:upstream --only-fixed
 ```
 
-{{% alert title="Note" color="info" %}}
+{{% alert title="Note" color="primary" %}}
 Other scanners like [Trivy](https://trivy.dev/) or [Docker Scout](https://docs.docker.com/scout/) also support Chainguard images. Scanners need to know the Wolfi security advisories to correctly report the vulnerabilities of Chainguard images.
 {{% /alert %}}
 
