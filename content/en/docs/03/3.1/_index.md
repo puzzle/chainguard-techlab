@@ -1,7 +1,7 @@
 ---
-title: "2.1 Drop-in replacements"
-weight: 21
-sectionnumber: 2.1
+title: "3.1 Drop-in replacements"
+weight: 31
+sectionnumber: 3.1
 ---
 
 ## Container images - Drop-in replacements

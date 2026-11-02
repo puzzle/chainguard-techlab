@@ -47,7 +47,7 @@ To use the Chainguard Console you need an account. With the free **Catalog Start
 The image selection of the Catalog Starter plan is fixed and cannot be changed later. FIPS images are not included. See [Catalog Starter](https://www.chainguard.dev/docs/chainguard/containers/reference/catalog-starter) for all limits.
 {{% /alert %}}
 
-Alternatively you can sign up on the command line, for example with your GitHub account. This requires `chainctl`, see [lab 1.4](/docs/01/1.4/):
+Alternatively you can sign up on the command line, for example with your GitHub account. This requires `chainctl`, see [lab 2](/docs/02/):
 
 ```bash
 chainctl starter init
@@ -67,7 +67,7 @@ After signing in, you land on the **Overview** page of your organization.
 The navigation on the left contains, among others:
 
 * **Images**: container images
-* **Helm charts**: Helm charts, including the `iamguarded` charts as replacement for Bitnami charts (see [lab 3](/docs/03/))
+* **Helm charts**: Helm charts, including the `iamguarded` charts as replacement for Bitnami charts (see [lab 4](/docs/04/))
 * **Packages**: APK packages in the private repository of the organization
 
 
@@ -108,4 +108,4 @@ Explore the tabs and answer the following questions:
 Most `latest` versions show no vulnerabilities, so you may need to select an older version to see findings.
 {{% /alert %}}
 
-We will use the same information with the command line tools in the following labs: digests in [lab 2.4](/docs/02/2.4/), SBOM and signatures in [lab 2.3](/docs/02/2.3/).
+We will use the same information with the command line tools in the following labs: digests in [lab 3.4](/docs/03/3.4/), SBOM and signatures in [lab 3.3](/docs/03/3.3/).

@@ -1,7 +1,7 @@
 ---
-title: "5.3 Use Chainguard Libraries"
-weight: 53
-sectionnumber: 5.3
+title: "6.3 Use Chainguard Libraries"
+weight: 63
+sectionnumber: 6.3
 ---
 
 ## Get Libraries

@@ -1,9 +1,7 @@
 ---
-title: "6. Additional"
+title: "6. Application Migration to Chainguard"
 weight: 6
 sectionnumber: 6
 description: >
-  Additional and optional labs.
+  Build an application and migrate it to Chainguard Images and Libs.
 ---
-
-Additional labs that are not required for the techlab, but useful when using Chainguard in your company.

@@ -1,9 +1,37 @@
 ---
-title: "4. Chainguard Libraries"
+title: "4. Chainguard Helm Charts"
 weight: 4
 sectionnumber: 4
 description: >
-  Test Migrations of Libraries.
+  Test Migrations of Helm Charts.
 ---
 
+## Helm Charts
 
+TODO
+
+https://edu.chainguard.dev/chainguard/chainguard-images/how-to-use/use-chainguard-helm-charts/
+
+
+```bash
+chainctl auth login
+chainctl auth configure-docker --pull-token --save --ttl=24h
+
+
+chainctl auth configure-docker --pull-token --save --ttl=24h
+
+    With which location is the pull token associated?      
+                                                           
+    [chainguard.dev-partners] chainguard.dev-partners images catalog.
+  > └ [iamguarded-charts]                                  
+
+ export HELMUSER=
+ export HELMPASS=
+
+
+helm registry login cgr.dev \
+  --username=$HELMUSER \
+  --password=$HELMPASS
+  
+helm template oci://cgr.dev/chainguard.dev-partners/iamguarded-charts/kafka
+```

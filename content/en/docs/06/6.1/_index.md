@@ -1,56 +1,87 @@
 ---
-title: "6.1 Pull-through cache"
+title: "6.1 Example Application"
 weight: 61
 sectionnumber: 6.1
-description: >
-  Using Chainguard images through your own registry.
 ---
 
-## Pull-through cache
+## App - the standard way
 
-For this techlab we pull the images directly from `cgr.dev`. If you are using Chainguard for your company, it is best practice to set up a pull-through cache in the registry of your choice (for example Harbor, Artifactory, Nexus or Cloudsmith).
-
-The advantages of a pull-through cache are:
-
-* builds and clusters only need access to your own registry, not to `cgr.dev`
-* only one technical account is needed to authenticate against Chainguard
-* images are cached, which reduces the dependency on `cgr.dev` and speeds up pulls
-* existing policies of your registry (scanning, retention, access control) also apply to Chainguard images
-
-This lab is optional and requires a registry in which you can configure a proxy or remote repository.
-
-
-### Create a pull token
-
-The registry needs credentials to pull from `cgr.dev`. Create a pull token for your organization, replace `<your-organization>` with the name of your Chainguard organization:
+Using example [Spring Boot app](https://github.com/spring-guides/gs-spring-boot/tree/main/initial)
 
 ```bash
-chainctl auth pull-token create --parent=<your-organization> --ttl=720h
+git clone https://github.com/spring-guides/gs-spring-boot.git
+cd gs-spring-boot/initial
 ```
 
-The command prints a username and a password. Store them safely, they are needed in the next step.
+Create the `.dockerignore` file inside `gs-spring-boot/initial` with following content:
 
-{{% alert title="Note" color="info" %}}
-Choose the TTL of the token according to your requirements and renew the token before it expires.
-{{% /alert %}}
+```
+Containerfile*
+```
+
+This should make builds faster. Changes in Containerfiles have no impact on build context and caching.
 
 
-### Configure the registry
-
-The exact steps depend on your registry. In general you have to:
-
-1. create a remote/proxy repository with the upstream URL `https://cgr.dev`
-2. configure the username and password of the pull token
-3. pull the images through your registry
-
-Example with Harbor:
-
-1. In "Registries", create a new endpoint with the provider "Docker Registry", the URL `https://cgr.dev` and the pull token credentials
-2. Create a new project, enable "Proxy Cache" and select the endpoint
-3. Pull the image through the project:
-
+Test base image candidate and get infos:
 ```bash
-docker pull <harbor-host>/<project>/<your-organization>/python:latest
+docker run -ti docker.io/eclipse-temurin:21-jdk-ubi9-minimal /bin/bash
+
+# execute inside the image:
+
+# user
+whoami
+
+# location
+pwd
+
+# java version
+java -version
 ```
 
-Guides for the different registries can be found in the [Chainguard documentation](https://edu.chainguard.dev/chainguard/chainguard-registry/pull-through-guides/).
+As we see, this image runs as user `root` inside root `/` and has java version 21.
+
+
+Create the `Containerfile.jdk` file inside `gs-spring-boot/initial` with following content:
+
+```Dockerfile
+FROM docker.io/eclipse-temurin:21-jdk-ubi9-minimal AS build
+# user: root!
+COPY . .
+RUN ./gradlew build
+
+FROM docker.io/eclipse-temurin:21-jre-ubi9-minimal
+COPY --from=build /build/libs/spring-boot-0.0.1-SNAPSHOT.jar /
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "/spring-boot-0.0.1-SNAPSHOT.jar"]
+```
+
+This is a multistage build using a JDK to build the app and a JRE container to run it.
+
+
+Build image (includes app build):
+```bash
+docker build -t my-spring-jdk -f Containerfile.jdk .
+```
+
+Attention: Clean local build and .gradle files if you encounter file permission problems.
+
+
+Test app inside container:
+```bash
+docker run -ti --entrypoint /bin/bash my-spring-jdk
+java -jar /spring-boot-0.0.1-SNAPSHOT.jar
+```
+
+Exit with ctrl+d
+
+
+Run container:
+```bash
+docker run -p 8080:8080 my-spring-jdk
+```
+
+Open your browser at http://localhost:8080/
+
+You should see: `Greetings from Spring Boot!`
+
+Stop container with ctrl+c

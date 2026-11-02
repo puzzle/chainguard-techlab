@@ -1,7 +1,7 @@
 ---
-title: "5.2 Use Chainguard Image"
-weight: 52
-sectionnumber: 5.2
+title: "6.2 Use Chainguard Image"
+weight: 62
+sectionnumber: 6.2
 ---
 
 ## App - the Chainguard way

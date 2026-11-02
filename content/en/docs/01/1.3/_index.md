@@ -21,15 +21,16 @@ Let's check out the different types:
 
 ![Chainguard library FIPS container image](fips.png)
 
-In the image directory of Chainguard some images are tagged with ´FIPS validated´. These images comply strict cryptographic requirements to be used for the U.S. federal agencies, defense contractors, and regulated industries.
+In the image directory of Chainguard some images are tagged with `FIPS validated`. These images comply strict cryptographic requirements to be used for the U.S. federal agencies, defense contractors, and regulated industries.
 
 
 #### iamguarded images
 
 ![Chainguard library iamguarded container image](iamguarded.png)
 
-If the image has the "-iamguarded" in its name, it is composed to be a base image for a Helm Chart.
+If the image has the "-iamguarded" in its name, it is composed to be a used for a Helm Chart.
 
+In Chainguard terms, IAMGuarded is a security-enhanced variant of an upstream app plus a companion Helm chart that’s designed to deploy that variant.
 
 #### Tags and Digests
 

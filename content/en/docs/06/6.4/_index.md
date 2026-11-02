@@ -1,7 +1,7 @@
 ---
-title: "5.4 Vulnerability Scan and CVE comparison"
-weight: 54
-sectionnumber: 5.4
+title: "6.4 Vulnerability Scan and CVE comparison"
+weight: 64
+sectionnumber: 6.4
 ---
 
 ## Scan Images

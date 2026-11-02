@@ -1,7 +1,7 @@
 ---
-title: "2.2 More challenging swaps"
-weight: 22
-sectionnumber: 2.2
+title: "3.2 More challenging swaps"
+weight: 32
+sectionnumber: 3.2
 ---
 
 ## Container images - More challenging swaps
@@ -254,4 +254,4 @@ docker inspect --format '{{.Config.User}}' python-app:upstream
 docker inspect --format '{{.Config.User}}' python-app:cg
 ```
 
-We will compare the vulnerabilities of both images in the [next lab](/docs/02/2.3/).
+We will compare the vulnerabilities of both images in the [next lab](/docs/03/3.3/).
