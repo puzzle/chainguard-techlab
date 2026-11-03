@@ -45,11 +45,14 @@ jobs:
         with:
           version: 'latest'
           
+      # Dependabot PRs are not deployed, see build-and-publish.yaml
       - name: Create KUBECONFIG
+        if: github.event.pull_request.user.login != 'dependabot[bot]'
         env:
           KUBE_CONFIG: '${{ secrets.KUBECONFIG_TEST_AV2 }}'
         run: bash ./scripts/create_kubeconfig.sh
       - name: Remove PR Environment Helm Release
+        if: github.event.pull_request.user.login != 'dependabot[bot]'
         run: bash ./scripts/remove_helm_release.sh
 
   cleanup_registry:
