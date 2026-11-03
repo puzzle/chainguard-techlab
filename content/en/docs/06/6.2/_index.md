@@ -45,7 +45,7 @@ Change the greetings inside `src/main/java/com/example/springboot/HelloControlle
 Create the `Containerfile.cg` file inside `gs-spring-boot/initial` with following content:
 
 ```Dockerfile
-FROM cgr.dev/chainguard.dev-partners/jdk:openjdk-21 AS build
+FROM cgr.dev/chainguard.dev-partners/jdk:openjdk-17 AS build
 COPY . .
 RUN ./gradlew build
 
@@ -71,14 +71,22 @@ Attention: Clean local build and .gradle files if you encounter file permission 
 Test app inside container:
 ```bash
 docker run -ti --entrypoint /bin/sh my-spring-cg
-java -jar ./build/libs/spring-boot-0.0.1-SNAPSHOT.jar
 ```
 
-You should get an error.
-The images are minimal and hardened, to keep the attack surface as small as possible.
+You **should** get an error starting the container:
+
+```bash
+docker: Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: exec: "/bin/sh": stat /bin/sh: no such file or directory
+```
+
+{{% alert title="Note" color="primary" %}}
+The images are minimal to keep the attack surface as small as possible.
+
+That means that they do not have a package manager or a terminal.
+{{% /alert %}}
 
 
-Run container:
+Run the container:
 ```bash
 docker run -p 8080:8080 my-spring-cg
 ```

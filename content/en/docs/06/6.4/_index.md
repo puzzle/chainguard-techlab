@@ -1,28 +1,89 @@
 ---
-title: "6.4 Vulnerability Scan and CVE comparison"
+title: "6.4 Use Chainguard Libraries"
 weight: 64
 sectionnumber: 6.4
 ---
 
-## Scan Images
+## Get Libraries
 
-We will scan and compare both images.
+Now we will also use Chainguard Libraries.
 
-Check the Grype tutorial for installing Grype or using the Grype container: https://edu.chainguard.dev/chainguard/chainguard-images/staying-secure/working-with-scanners/grype-tutorial/
-
-Scan both images to compare the vulnerabilities:
+The [CG doc](https://edu.chainguard.dev/chainguard/libraries/access/) states the following to get access to the [Java libraries](https://edu.chainguard.dev/chainguard/libraries/java/overview/):
 
 ```bash
-grype my-spring-jdk:latest
-
-grype my-spring-cg:latest
+chainctl auth pull-token --repository=java --parent=chainguard.dev-partners --ttl=8670h
 ```
 
-Alternatively with docker:
+We will use the eval command that will set the needed env vars:
+```bash
+eval $(chainctl auth pull-token --output env --repository=java --parent=chainguard.dev-partners)
+```
+
+Check the Gradle build configuration (`initial/build.gradle`) for dependencies.
+
+Chainguard provides the `spring-boot-starter-web` library:
+
+https://libraries.cgr.dev/java/org/springframework/boot/spring-boot-starter-web/
+
+
+Now we have to configure Gradle to use Chainguard libraries that are available through the Chainguard repository: `https://libraries.cgr.dev/java/`
+
+
+Extend the file `build.gradle` to get Chainguard libraries:
+
+```shell
+...
+repositories {
+ maven {
+  url = uri("https://libraries.cgr.dev/java/")
+  credentials {
+   username = "CHAINGUARD_JAVA_IDENTITY_ID"
+   password = "CHAINGUARD_JAVA_TOKEN"
+  }
+ }
+ mavenCentral()
+}
+...
+```
+
+Official documentation: https://edu.chainguard.dev/chainguard/libraries/java/build-configuration/#gradle
+
+
+We will build the application outside of the container.
+Java 21 is needed and a clean Gradle cache.
+
+Clean the Gradle cache:
 
 ```bash
-docker run --rm -it --volume /var/run/docker.sock:/var/run/docker.sock anchore/grype my-spring-jdk:latest
-docker run --rm -it --volume /var/run/docker.sock:/var/run/docker.sock anchore/grype my-spring-cg:latest
+rm -rf .gradle/caches/
+rm -rf ~/.gradle/caches/
 ```
 
-What are the differences?
+Build the app:
+
+```bash
+./gradlew clean build
+```
+
+Run the app:
+
+```bash
+java -jar build/libs/spring-boot-0.0.1-SNAPSHOT.jar 
+```
+
+Open your browser at http://localhost:8080/
+
+You should see: `Greetings from Chainguard!`
+
+{{% alert title="Note" color="primary" %}}
+Stop the app with `ctrl+c`
+{{% /alert %}}
+
+
+Now we can verify the usage of Chainguard libraries inside our Java app:
+
+```bash
+chainctl libraries verify --detailed --parent=chainguard.dev-partners ./build/libs/spring-boot-0.0.1-SNAPSHOT.jar
+```
+
+Official documentation: https://edu.chainguard.dev/chainguard/libraries/verification/
