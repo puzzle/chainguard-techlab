@@ -32,6 +32,7 @@ If the image has the "-iamguarded" in its name, it is composed to be a used for 
 
 In Chainguard terms, IAMGuarded is a security-enhanced variant of an upstream app plus a companion Helm chart that’s designed to deploy that variant.
 
+
 #### Tags and Digests
 
 While the images are rebuild nightly, the image tags (for example ´jenkins:2.546-jdk21´) stay the same, but the underlying "digests" of its dependencies might update to account for security patches (for example ´git:2.52.0-r1´). You can check out these digests by selecting the image and reviewing the included packages.
