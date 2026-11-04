@@ -13,3 +13,6 @@ resources
 .idea/
 .hugo_build.lock
 misc/
+spring-boot-jdk.jar
+spring-boot-cg.jar
+spring-boot-cg-lib.jar

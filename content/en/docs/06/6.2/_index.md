@@ -18,7 +18,7 @@ Search for a JDK (Java) image.
 Test the found Chainguard base image candidate (`jdk`) and get infos:
 
 ```bash
-docker run -ti cgr.dev/chainguard.dev-partners/jdk:openjdk-17 /bin/sh
+docker run -ti cgr.dev/chainguard.dev-partners/jdk:openjdk-21 /bin/sh
 
 # execute inside the image:
 
@@ -32,7 +32,7 @@ pwd
 java -version
 ```
 
-As we see, this image runs as user `java` inside `/home/build` and has java version 17.
+As we see, this image runs as user `java` inside `/home/build` and has java version 21.
 As you know, running as root in production is a no-go. OpenShift will also prevent the container from starting.
 
 {{% alert title="Note" color="primary" %}}
@@ -45,7 +45,7 @@ Change the greetings inside `src/main/java/com/example/springboot/HelloControlle
 Create the `Containerfile.cg` file inside `gs-spring-boot/initial` with following content:
 
 ```Dockerfile
-FROM cgr.dev/chainguard.dev-partners/jdk:openjdk-17 AS build
+FROM cgr.dev/chainguard.dev-partners/jdk:openjdk-21 AS build
 COPY . .
 RUN ./gradlew build
 

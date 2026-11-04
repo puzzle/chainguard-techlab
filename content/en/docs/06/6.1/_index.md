@@ -13,14 +13,43 @@ git clone https://github.com/spring-guides/gs-spring-boot.git
 cd gs-spring-boot/initial
 ```
 
+
+### Speed up build
+
 Create the `.dockerignore` file inside `gs-spring-boot/initial` with following content:
 
 ```
 Containerfile*
+.gradle/
+build/
 ```
 
 This should make builds faster. Changes in Containerfiles have no impact on build context and caching.
 
+
+### Update the app
+
+Update the `org.springframework.boot` plugin to version `4.1.1` inside `build.gradle`:
+
+```
+plugins {
+  id 'org.springframework.boot' version '4.1.1'
+...
+}
+```
+
+Change also the JDK to `21` inside `build.gradle`:
+
+```
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(21)
+  }
+}
+```
+
+
+### Check the base image
 
 Test base image candidate and get infos:
 ```bash
@@ -45,10 +74,12 @@ Exit the container with `ctrl+d`
 {{% /alert %}}
 
 
+### Build the app image
+
 Create the `Containerfile.jdk` file inside `gs-spring-boot/initial` with following content:
 
 ```Dockerfile
-FROM docker.io/eclipse-temurin:17-jdk-ubi9-minimal AS build
+FROM docker.io/eclipse-temurin:21-jdk-ubi9-minimal AS build
 # user: root!
 COPY . .
 RUN ./gradlew build
@@ -71,6 +102,8 @@ docker build -t my-spring-jdk -f Containerfile.jdk .
 Attention: Clean local build and .gradle files if you encounter file permission problems.
 {{% /alert %}}
 
+
+### Run and test the app
 
 Test app inside container:
 ```bash
