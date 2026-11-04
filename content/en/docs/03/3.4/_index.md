@@ -1,91 +1,106 @@
 ---
-title: "3.4 Keeping images up to date"
+title: "3.4 Scanning and Verification"
 weight: 34
 sectionnumber: 3.4
 ---
 
-## Container images - Keeping images up to date
+## Container images - Scanning and Verification
 
-Chainguard images are rebuilt as often as needed, depending on upstream releases and CVE fixes. Even if the version tag stays the same, the underlying digest changes with every new build.
+Chainguard images are built to have as few known vulnerabilities (CVEs) as possible. Every image is signed and comes with a build-time SBOM (Software Bill of Materials). The signatures and SBOMs are created with [Sigstore](https://www.sigstore.dev/) and can be verified with `cosign`.
 
-
-### Tags and digests
-
-A tag like `python:3.12` is a moving pointer. Chainguard uses different kinds of tags:
-
-| Tag | Example | Meaning |
-| --- | --- | --- |
-| Major/minor version | `python:3.12` | always points to the latest build of the latest 3.12 release |
-| Full version | `python:3.12.11` | points to the latest build of this release |
-| Epoch | `python:3.12.11-r1` | the build number of this release, increased when Chainguard rebuilds the package, for example to fix a vulnerability |
-| Digest | `python@sha256:...` | the immutable identifier of exactly one image |
-
-Only the latest release of a version stream receives updates. As soon as `3.12.12` is available, `3.12.11` is no longer rebuilt.
-
-Therefore the recommendation is:
-
-* reference the version stream you want to use, for example `3.12`
-* pin the image with its digest to get reproducible builds
-* update the digest automatically and regularly
+In this lab we scan the images from [lab 3.3](/docs/03/3.3/), verify the signature of a Chainguard image and download its SBOM.
 
 
-### Get the digest of an image
+### Install the tools
 
-Pull the image and show its digest:
+Install [Grype](https://github.com/anchore/grype) as vulnerability scanner, see the [Grype tutorial](https://edu.chainguard.dev/chainguard/chainguard-images/staying-secure/working-with-scanners/grype-tutorial/):
 
 ```bash
-docker pull cgr.dev/chainguard/python:latest
-docker inspect --format '{{index .RepoDigests 0}}' cgr.dev/chainguard/python:latest
+curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b ~/.local/bin
 ```
 
-You can also look up the digest without pulling the image:
+Install [cosign](https://docs.sigstore.dev/cosign/system_config/installation/), for example with Homebrew:
 
 ```bash
-docker buildx imagetools inspect cgr.dev/chainguard/python:latest
+brew install cosign
 ```
 
-The digests and tags of the images of our organization are also shown in the [Chainguard console](https://console.chainguard.dev/).
+We also use [jq](https://jqlang.org/) to format JSON output.
 
-Pin the base images in `Dockerfile.cg` from [lab 3.2](/docs/03/3.2/) with the digest:
 
-```Dockerfile
-FROM cgr.dev/chainguard/python:latest-dev@sha256:<digest> AS builder
-...
-FROM cgr.dev/chainguard/python:latest@sha256:<digest>
+### Scan images
+
+Scan the upstream image and the Chainguard image from [lab 3.3](/docs/03/3.3/):
+
+```bash
+grype python-app:upstream
+grype python-app:cg
 ```
 
-The tag is kept for readability, but the digest decides which image is used.
+If you don't want to install Grype, you can use the Grype container:
 
-
-### Automate digest updates
-
-Pinned digests need to be updated, otherwise you miss the security fixes. Chainguard provides [digestabot](https://github.com/chainguard-dev/digestabot), a GitHub Action that looks for image digests in your repository, checks if a newer digest is available for the tag and creates a pull request with the updates.
-
-Example workflow `.github/workflows/digestabot.yaml`:
-
-```yaml
-name: Image digest update
-
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: "0 1 * * *"
-
-permissions:
-  contents: write
-  pull-requests: write
-  id-token: write
-
-jobs:
-  image-update:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: chainguard-dev/digestabot@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+```bash
+docker run --rm -it --volume /var/run/docker.sock:/var/run/docker.sock anchore/grype python-app:upstream
+docker run --rm -it --volume /var/run/docker.sock:/var/run/docker.sock anchore/grype python-app:cg
 ```
 
-If you are not using GitHub Actions, [Renovate](https://docs.renovatebot.com/docker/#digest-pinning) can pin and update digests as well.
+Compare the results:
 
-For more information, see [Using digestabot](https://edu.chainguard.dev/chainguard/chainguard-images/staying-secure/updating-images/digestabot/).
+* How many vulnerabilities are found in each image?
+* Where do the vulnerabilities of the upstream image come from (base image, OS packages, Python packages)?
+
+To only show vulnerabilities for which a fix is available, use:
+
+```bash
+grype python-app:upstream --only-fixed
+```
+
+{{% alert title="Note" color="primary" %}}
+Other scanners like [Trivy](https://trivy.dev/) or [Docker Scout](https://docs.docker.com/scout/) also support Chainguard images. Scanners need to know the Wolfi security advisories to correctly report the vulnerabilities of Chainguard images.
+{{% /alert %}}
+
+
+### Verify the image signature
+
+Every Chainguard image is signed during the build. With `cosign` we can verify that an image was built by Chainguard and was not modified afterwards.
+
+The public images in `cgr.dev/chainguard` are signed by the Chainguard release workflow on GitHub:
+
+```bash
+cosign verify \
+  --certificate-oidc-issuer=https://token.actions.githubusercontent.com \
+  --certificate-identity=https://github.com/chainguard-images/images/.github/workflows/release.yaml@refs/heads/main \
+  cgr.dev/chainguard/python:latest | jq
+```
+
+The output shows the verified claims of the signature, for example the digest of the image.
+
+Images of our organization are signed with a different identity, see [Verifying Chainguard Containers](https://edu.chainguard.dev/chainguard/chainguard-images/how-to-use/verifying-chainguard-images-and-metadata-signatures-with-cosign/) for details.
+
+
+### Retrieve the SBOM
+
+The SBOM lists every package included in the image, including the version and license. It is attached to the image as a signed attestation.
+
+Download the SBOM of the Chainguard Python image:
+
+```bash
+cosign download attestation \
+  --platform=linux/amd64 \
+  --predicate-type=https://spdx.dev/Document \
+  cgr.dev/chainguard/python:latest | jq -r .payload | base64 -d | jq .predicate > python-sbom.json
+```
+
+List the packages included in the image:
+
+```bash
+jq -r '.packages[] | "\(.name) \(.versionInfo)"' python-sbom.json
+```
+
+You can also scan the SBOM directly, without pulling the image:
+
+```bash
+grype sbom:./python-sbom.json
+```
+
+For more information, see [Retrieve image SBOMs](https://edu.chainguard.dev/chainguard/chainguard-images/how-to-use/retrieve-image-sboms/).

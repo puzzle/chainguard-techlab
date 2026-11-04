@@ -108,4 +108,4 @@ Explore the tabs and answer the following questions:
 Most `latest` versions show no vulnerabilities, so you may need to select an older version to see findings.
 {{% /alert %}}
 
-We will use the same information with the command line tools in the following labs: digests in [lab 3.4](/docs/03/3.4/), SBOM and signatures in [lab 3.3](/docs/03/3.3/).
+We will use the same information with the command line tools in the following labs: digests in [lab 3.5](/docs/03/3.5/), SBOM and signatures in [lab 3.4](/docs/03/3.4/).

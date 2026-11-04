@@ -1,74 +1,54 @@
 ---
-title: "3.1 Drop-in replacements"
+title: "3.1 Different Chainguard images"
 weight: 31
 sectionnumber: 3.1
+description: >
+  Introduction to Chainguard.
 ---
 
-## Container images - Drop-in replacements
+## Different Chainguard images
+
+Chainguard offers container images, virtual machine (VM) images, helm charts and libraries.
 
 
-### Check for Chainguard images
+### Container images
 
-Many container images for infrastructure applications are build to be drop-in replacements to their open-source counter parts.
-Let's try this out!
-
-List the repos of the default organization:
-
-```bash
-chainctl images repos list
-```
-
-To list the repos of a specific organization, use the `--parent` flag:
-
-```bash
-chainctl images repos list --parent=chainguard.dev-partners
-```
-
-Should show something like this:
-
-```bash
-[cgr.dev/chainguard.dev-partners]
-├ [adoptium-jdk]
-├ [adoptium-jre]
-├ [curl]
-...
-```
-
-List `python` image tags that we can use in the lab organization:
-
-```bash
-chainctl images list --repo=python
-```
+Chainguard offers a wide variety of container images.
+Let's check out the different types:
 
 
-### Replace image
+#### FIPS images
 
-What image should we use? infra structure app but easy to check...
+![Chainguard library FIPS container image](fips.png)
 
-
-#### Pulling images
-
-Chainguard images can be pulled the the docker pull command. Here we are pulling the Tag `latest-glibc`:
-
-```bash
-docker pull cgr.dev/chainguard/git:latest-glibc
-```
-If you don't specify a tag, docker will pull the latest image. Also please note, that not all images are available for this workshop.
-
-One can also pull specific image digests, the advantage of this being reproducibility, as it will ensure that you are using the same image each time (versus the tag that may receive updates, see [section 1.3](/docs/01/1.3/)).
-A specific digest can be pulled via this docker command:
-
-```bash
-docker pull cgr.dev/chainguard/git@sha256:f6658e10edde332c6f1dc804f0f664676dc40db78ba4009071fea6b9d97d592f
-```
+In the image directory of Chainguard some images are tagged with `FIPS validated`. These images comply strict cryptographic requirements to be used for the U.S. federal agencies, defense contractors, and regulated industries.
 
 
-### Retrieve SBOM
+#### iamguarded images
 
-TODO
+![Chainguard library iamguarded container image](iamguarded.png)
 
-https://edu.chainguard.dev/chainguard/chainguard-images/how-to-use/retrieve-image-sboms/
+If the image has the "-iamguarded" in its name, it is composed to be a used for a Helm Chart.
+
+In Chainguard terms, IAMGuarded is a security-enhanced variant of an upstream app plus a companion Helm chart that’s designed to deploy that variant.
 
 
-### Test image
+#### Tags and Digests
+
+While the images are rebuild nightly, the image tags (for example ´jenkins:2.546-jdk21´) stay the same, but the underlying "digests" of its dependencies might update to account for security patches (for example ´git:2.52.0-r1´). You can check out these digests by selecting the image and reviewing the included packages.
+
+![Digests of jenkins latest](digests.png)
+
+When the official image tag version is increased, the previous security patches are either amended or rebased on the new tag version. Keeping the Chainguard image en par with the official updates but still patching the security vulnerabilities.
+
+
+##### dev images
+
+![Chainguard dev container image](dev.png)
+
+The dev image version can be found as an additional tagged version.
+
+This image version includes a few more tools such as a shell and the apk package manager (bash, git, wget, apk-tools, BusyBox), that will help you when developing, building and debugging applications. It is designed to be used  during the developement and build process.
+
+The recommended pattern is to use a dev image during the build stage, install dependencies or perform compilation there, and then copy only the required files into a distroless production image. This ensures the final runtime environment is as minimal and hardened as possible.
 

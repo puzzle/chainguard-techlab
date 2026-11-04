@@ -1,106 +1,261 @@
 ---
-title: "3.3 Scanning and Verification"
+title: "3.3 More challenging swaps"
 weight: 33
 sectionnumber: 3.3
 ---
 
-## Container images - Scanning and Verification
+## Container images - More challenging swaps
 
-Chainguard images are built to have as few known vulnerabilities (CVEs) as possible. Every image is signed and comes with a build-time SBOM (Software Bill of Materials). The signatures and SBOMs are created with [Sigstore](https://www.sigstore.dev/) and can be verified with `cosign`.
+<!--
 
-In this lab we scan the images from [lab 3.2](/docs/03/3.2/), verify the signature of a Chainguard image and download its SBOM.
+TODO
+
+Adapt Dockerfile
+
+* switch to apk
+* user permission ID no longer root, uid=65532
+* images set entrypoint explicitly (in python image the entrypoint is python)
+  * ´docker run-it python´
+  * ´docker run -it python echo "in a shell"´
+* Busy Box as default
+* groupadd/useradd -> addgroup, adduser
+* entrypoints may be different
+
+Migration Checlist: https://edu.chainguard.dev/chainguard/migration/migration-checklist/
+Converter: https://edu.chainguard.dev/chainguard/migration/dockerfile-conversion/
 
 
-### Install the tools
+-->
 
-Install [Grype](https://github.com/anchore/grype) as vulnerability scanner, see the [Grype tutorial](https://edu.chainguard.dev/chainguard/chainguard-images/staying-secure/working-with-scanners/grype-tutorial/):
+Not every image is a drop-in replacement. As soon as you build your own image on top of a base image, a few differences between Chainguard images and the common upstream images become visible:
+
+* Chainguard images are based on Wolfi and use `apk` instead of `apt`/`dnf` as package manager
+* the images run as non-root user with the UID `65532` (`nonroot`) instead of `root`
+* the runtime images are distroless, they contain no shell and no package manager
+* the images set the entrypoint explicitly, which may differ from the upstream image
+* the `-dev` images use BusyBox, so some tools have different names or options (for example `adduser`/`addgroup` instead of `useradd`/`groupadd`)
+
+In this lab we migrate a small Python application step by step.
+
+For a complete list of things to check, see the [Migration Checklist](https://edu.chainguard.dev/chainguard/migration/migration-checklist/).
+
+
+### Prepare the example application
+
+Create a new directory and move into it:
 
 ```bash
-curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b ~/.local/bin
+mkdir -p ~/tmp/python-app && cd $_
 ```
 
-Install [cosign](https://docs.sigstore.dev/cosign/system_config/installation/), for example with Homebrew:
+Create the file `app.py`:
 
-```bash
-brew install cosign
+```python
+from flask import Flask
+
+app = Flask(__name__)
+
+
+@app.route("/")
+def hello():
+    return "Hello from Python!\n"
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8080)
 ```
 
-We also use [jq](https://jqlang.org/) to format JSON output.
+Create the file `requirements.txt`:
 
-
-### Scan images
-
-Scan the upstream image and the Chainguard image from [lab 3.2](/docs/03/3.2/):
-
-```bash
-grype python-app:upstream
-grype python-app:cg
+```text
+flask
 ```
 
-If you don't want to install Grype, you can use the Grype container:
+Create the file `Dockerfile` as you would typically write it with the upstream Python image:
 
-```bash
-docker run --rm -it --volume /var/run/docker.sock:/var/run/docker.sock anchore/grype python-app:upstream
-docker run --rm -it --volume /var/run/docker.sock:/var/run/docker.sock anchore/grype python-app:cg
+```Dockerfile
+FROM python:3.12
+
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+RUN useradd -m appuser
+
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY app.py .
+
+USER appuser
+EXPOSE 8080
+CMD ["python", "app.py"]
 ```
 
-Compare the results:
-
-* How many vulnerabilities are found in each image?
-* Where do the vulnerabilities of the upstream image come from (base image, OS packages, Python packages)?
-
-To only show vulnerabilities for which a fix is available, use:
+Build and run the image to make sure it works:
 
 ```bash
-grype python-app:upstream --only-fixed
+docker build -t python-app:upstream .
+docker run --rm -p 8080:8080 python-app:upstream
+```
+
+In a second terminal check the application:
+
+```bash
+curl http://localhost:8080/
 ```
 
 {{% alert title="Note" color="primary" %}}
-Other scanners like [Trivy](https://trivy.dev/) or [Docker Scout](https://docs.docker.com/scout/) also support Chainguard images. Scanners need to know the Wolfi security advisories to correctly report the vulnerabilities of Chainguard images.
+Stop the container with `ctrl+c`
 {{% /alert %}}
 
 
-### Verify the image signature
+### Entrypoints
 
-Every Chainguard image is signed during the build. With `cosign` we can verify that an image was built by Chainguard and was not modified afterwards.
-
-The public images in `cgr.dev/chainguard` are signed by the Chainguard release workflow on GitHub:
+Let's first have a look at how the Chainguard Python image behaves. The entrypoint of the image is `python` itself:
 
 ```bash
-cosign verify \
-  --certificate-oidc-issuer=https://token.actions.githubusercontent.com \
-  --certificate-identity=https://github.com/chainguard-images/images/.github/workflows/release.yaml@refs/heads/main \
-  cgr.dev/chainguard/python:latest | jq
+docker run --rm -it cgr.dev/chainguard/python:latest
 ```
 
-The output shows the verified claims of the signature, for example the digest of the image.
-
-Images of our organization are signed with a different identity, see [Verifying Chainguard Containers](https://edu.chainguard.dev/chainguard/chainguard-images/how-to-use/verifying-chainguard-images-and-metadata-signatures-with-cosign/) for details.
-
-
-### Retrieve the SBOM
-
-The SBOM lists every package included in the image, including the version and license. It is attached to the image as a signed attestation.
-
-Download the SBOM of the Chainguard Python image:
+This opens the Python interpreter (exit with `exit()`). Every argument you pass is handed over to `python`:
 
 ```bash
-cosign download attestation \
-  --platform=linux/amd64 \
-  --predicate-type=https://spdx.dev/Document \
-  cgr.dev/chainguard/python:latest | jq -r .payload | base64 -d | jq .predicate > python-sbom.json
+docker run --rm cgr.dev/chainguard/python:latest --version
 ```
 
-List the packages included in the image:
+Try to run a shell command:
 
 ```bash
-jq -r '.packages[] | "\(.name) \(.versionInfo)"' python-sbom.json
+docker run --rm cgr.dev/chainguard/python:latest echo "in a shell"
 ```
 
-You can also scan the SBOM directly, without pulling the image:
+This fails, because Python tries to open a file called `echo`. The image has no shell, so overwriting the entrypoint does not help either:
 
 ```bash
-grype sbom:./python-sbom.json
+docker run --rm --entrypoint /bin/sh cgr.dev/chainguard/python:latest
 ```
 
-For more information, see [Retrieve image SBOMs](https://edu.chainguard.dev/chainguard/chainguard-images/how-to-use/retrieve-image-sboms/).
+The `-dev` variant of the image includes a shell and `apk`:
+
+```bash
+docker run --rm -it --entrypoint /bin/sh cgr.dev/chainguard/python:latest-dev
+```
+
+Inside the container, check the user and the installed tools:
+
+```bash
+whoami
+id
+apk --version
+exit
+```
+
+{{% alert title="Note" color="primary" %}}
+Our `Dockerfile` uses `CMD ["python", "app.py"]`. With the Chainguard image this results in `python python app.py`, because `python` is already the entrypoint. Use `ENTRYPOINT` instead of `CMD`, or only pass the arguments, for example `CMD ["app.py"]`.
+{{% /alert %}}
+
+
+### Convert the Dockerfile with dfc
+
+Chainguard provides the Dockerfile Converter [dfc](https://edu.chainguard.dev/chainguard/migration/dockerfile-conversion/). It replaces the base images with Chainguard images, converts package manager commands to `apk` and user commands to the BusyBox syntax.
+
+Install dfc with Homebrew:
+
+```bash
+brew install chainguard-dev/tap/dfc
+```
+
+Or with Go:
+
+```bash
+go install github.com/chainguard-dev/dfc@latest
+```
+
+Convert the `Dockerfile` and print the result. With `--org` we tell dfc to use the images of the lab organization `chainguard.dev-partners`:
+
+```bash
+dfc --org chainguard.dev-partners ./Dockerfile
+```
+
+Compare the output with the original `Dockerfile`:
+
+* Which base image is used now?
+* What happened to the `apt-get` command?
+* What happened to `useradd`?
+* Why did dfc add a `USER root`?
+
+dfc does a mechanical conversion. The result works in most cases, but it still uses a `-dev` image for runtime. To get the full benefit of Chainguard images, we optimize the result manually with a multistage build.
+
+
+### Multistage build
+
+The recommended pattern is to use a `-dev` image to install dependencies or compile the application and to copy only the required files into a distroless runtime image.
+
+Create the file `Dockerfile.cg`:
+
+```Dockerfile
+FROM cgr.dev/chainguard/python:latest-dev AS builder
+
+ENV LANG=C.UTF-8
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV PATH="/app/venv/bin:$PATH"
+
+WORKDIR /app
+RUN python -m venv /app/venv
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+
+FROM cgr.dev/chainguard/python:latest
+
+ENV PYTHONUNBUFFERED=1
+ENV PATH="/venv/bin:$PATH"
+
+WORKDIR /app
+COPY app.py .
+COPY --from=builder /app/venv /venv
+
+EXPOSE 8080
+ENTRYPOINT ["python", "/app/app.py"]
+```
+
+Things to note:
+
+* the dependencies are installed into a virtual environment in the `builder` stage and copied into the runtime stage
+* `curl` is no longer installed, the runtime image only contains what is needed to run the application
+* no user is created, the image already runs as `nonroot` (UID `65532`)
+* the application listens on port `8080`, a non-root user cannot bind to ports below `1024`
+
+Build and run the image:
+
+```bash
+docker build -t python-app:cg -f Dockerfile.cg .
+docker run --rm -p 8080:8080 python-app:cg
+```
+
+In a second terminal check the application again:
+
+```bash
+curl http://localhost:8080/
+```
+
+{{% alert title="Note" color="primary" %}}
+Stop the container with `ctrl+c`
+{{% /alert %}}
+
+
+### Compare the images
+
+Compare the size of the images:
+
+```bash
+docker images python-app
+```
+
+Check which user the containers are running as:
+
+```bash
+docker inspect --format '{{.Config.User}}' python-app:upstream
+docker inspect --format '{{.Config.User}}' python-app:cg
+```
+
+We will compare the vulnerabilities of both images in the [next lab](/docs/03/3.4/).
