@@ -11,12 +11,13 @@
 * [x] rename additional to advanced
 * [x] 3.4 moove to advanced
 * [ ] 4. helm charts ausarbeiten, wie finden, wie holen, images dazu? (Ela)
-* [ ] moove 5.1 (Ela) to 5.2, ausarbeiten
-* [ ] 5.1 wieso brauchen wir libs? wieso von Chinguard (SLSA oder Scanned)
+* [x] moove 5.1 to 5.2
+* [ ] 5.1 wieso brauchen wir libs? wieso von Chinguard (SLSA oder Scanned / Ela)
+* [ ] 5.2 ausarbeiten
 * [ ] 6.2 hint to dfc, wie in 3.2
 * [ ] 6.3 comparison ausarbeiten
 * [ ] Präsis: Ela
-* [ ] Ela test lab mit spez org
+* [ ] Ela Labs durchspielen mit spez org
 
 
 ## Ablauf / Agenda

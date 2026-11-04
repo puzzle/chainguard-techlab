@@ -1,29 +1,27 @@
 ---
-title: "5.1 Chainguard Libraries"
+title: "5.1 Introduction to Chainguard Libraries"
 weight: 51
 sectionnumber: 5.1
 description: >
-  Test Migrations of Libraries.
+  Introduction to Chainguard Libraries.
 ---
+
+<!-- TODO: placeholder, to be extended -->
 
 ## Chainguard Libraries
 
-To show which libraries you have access to, paste this in your CLI:
+Most applications depend on many open source libraries, which are usually downloaded as pre-built packages from public registries like Maven Central, PyPI or npm. It is often not traceable how these packages were built, and attackers increasingly target these registries, for example by publishing malicious packages or by compromising the build of popular projects.
 
-```bash
-chainctl libraries entitlements list --parent=chainguard.dev-partners
-```
+[Chainguard Libraries](https://www.chainguard.dev/libraries) address this risk: Chainguard builds the libraries from their source code in its own hardened build infrastructure and provides them in a separate repository. The libraries can be used as a replacement for the packages from the public registries, without changes to the application code.
 
-Should show something like this:
+Chainguard Libraries are available for the following ecosystems:
 
-```bash
-Ecosystem Library Entitlements for chainguard.dev-partners (337c8d93f34ada9c0f59aa998aa2234aca10f7d7)
+* Java (Maven)
+* Python (PyPI)
+* JavaScript (npm)
 
-                            ID                             | ECOSYSTEM  
------------------------------------------------------------|------------
- 337c8d93f34ada9c0f59aa998aa2234aca10f7d7/2b16fc4ebdf97061 | JAVASCRIPT 
- 337c8d93f34ada9c0f59aa998aa2234aca10f7d7/37e80f06263e0662 | JAVA
- 337c8d93f34ada9c0f59aa998aa2234aca10f7d7/4a3dbce6fc6d2a1a | PYTHON
-```
+The libraries are provided through `https://libraries.cgr.dev/` and can be used directly by your build tool or through a repository manager like Artifactory or Nexus.
 
-This means, that we have access to [Chainguard libraries](https://www.chainguard.dev/libraries) for Java, JavaScript and python.
+In the following labs we check which libraries we have access to ([lab 5.2](/docs/05/5.2/)) and use the Java libraries to build an application ([lab 6.4](/docs/06/6.4/)).
+
+For more information, see the [Chainguard Libraries documentation](https://edu.chainguard.dev/chainguard/libraries/overview/).
