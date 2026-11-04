@@ -3,13 +3,13 @@
 ## TODO
 
 * [x] Ela zu Org einladen
-* [ ] 1.2 nix mehr optional, da in dev org
-  * [ ] muss in 2. rein, jedoch image stehen lassen
+* [x] 1.2 nix mehr optional, da in dev org
+  * so belassen
 * [ ] 2. Auth ausarbeiten
 * [ ] TODOs anschauen
 * [ ] SBOMs 2x?
-* [ ] rename additional to advanced
-* [ ] 3.4 moove to advanced
+* [x] rename additional to advanced
+* [x] 3.4 moove to advanced
 * [ ] 4. helm charts ausarbeiten, wie finden, wie holen, images dazu? (Ela)
 * [ ] moove 5.1 (Ela) to 5.2, ausarbeiten
 * [ ] 5.1 wieso brauchen wir libs? wieso von Chinguard (SLSA oder Scanned)

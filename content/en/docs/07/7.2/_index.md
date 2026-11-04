@@ -1,7 +1,7 @@
 ---
-title: "3.5 Keeping images up to date"
-weight: 35
-sectionnumber: 3.5
+title: "7.2 Keeping images up to date"
+weight: 72
+sectionnumber: 7.2
 ---
 
 ## Container images - Keeping images up to date
