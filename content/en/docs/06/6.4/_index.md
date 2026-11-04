@@ -81,6 +81,7 @@ Official documentation: https://edu.chainguard.dev/chainguard/libraries/java/bui
 
 Build the application again with Docker or build it local.
 
+
 ### Application build with Docker
 
 We will build the application inside a container, like in [lab 6.2](/docs/06/6.2/).
@@ -134,6 +135,7 @@ Stop and remove the container:
 docker stop my-spring-cg-lib
 ```
 
+
 ### Local application build
 
 {{% alert title="Note" color="primary" %}}
@@ -176,6 +178,7 @@ Copy your application jar for comparison:
 ```bash
 cp build/libs/spring-boot-0.0.1-SNAPSHOT.jar ./spring-boot-cg-lib.jar
 ```
+
 
 ## Verify Chainguard usage
 
