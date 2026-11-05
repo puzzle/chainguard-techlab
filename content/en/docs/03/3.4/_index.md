@@ -8,7 +8,7 @@ sectionnumber: 3.4
 
 Chainguard images are built to have as few known vulnerabilities (CVEs) as possible. Every image is signed and comes with a build-time SBOM (Software Bill of Materials). The signatures and SBOMs are created with [Sigstore](https://www.sigstore.dev/) and can be verified with `cosign`.
 
-In this lab we scan the images from [lab 3.3](/docs/03/3.3/), verify the signature of a Chainguard image and download its SBOM.
+In this lab we scan the images from [lab 3.3](/docs/03/3.3/), verify the signature of a Chainguard image and scan its SBOM.
 
 
 ### Install the tools
@@ -78,29 +78,17 @@ The output shows the verified claims of the signature, for example the digest of
 Images of our organization are signed with a different identity, see [Verifying Chainguard Containers](https://edu.chainguard.dev/chainguard/chainguard-images/how-to-use/verifying-chainguard-images-and-metadata-signatures-with-cosign/) for details.
 
 
-### Retrieve the SBOM
+### Scan the SBOM
 
 The SBOM lists every package included in the image, including the version and license. It is attached to the image as a signed attestation.
 
-Download the SBOM of the Chainguard Python image:
+Download the SBOM of the Chainguard Python image as described in [lab 3.2](/docs/03/3.2/), with `IMAGE=cgr.dev/chainguard/python:latest`, and store it as `python-sbom.json`.
 
-```bash
-cosign download attestation \
-  --platform=linux/amd64 \
-  --predicate-type=https://spdx.dev/Document \
-  cgr.dev/chainguard/python:latest | jq -r .payload | base64 -d | jq .predicate > python-sbom.json
-```
+Also list and count the packages.
 
-List the packages included in the image:
 
-```bash
-jq -r '.packages[] | "\(.name) \(.versionInfo)"' python-sbom.json
-```
-
-You can also scan the SBOM directly, without pulling the image:
+You can scan the SBOM directly, without pulling the image:
 
 ```bash
 grype sbom:./python-sbom.json
 ```
-
-For more information, see [Retrieve image SBOMs](https://edu.chainguard.dev/chainguard/chainguard-images/how-to-use/retrieve-image-sboms/).

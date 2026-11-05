@@ -5,7 +5,7 @@
 * [x] Ela zu Org einladen
 * [x] 1.2 nix mehr optional, da in dev org
   * so belassen
-* [ ] 2. Auth ausarbeiten
+* [ ] 2. Auth ausarbeiten (Ela)
 * [ ] TODOs anschauen
 * [ ] SBOMs 2x?
 * [x] rename additional to advanced
@@ -26,7 +26,15 @@
   * Supply Chain Security
   * Chainguard Präsentation
 * labs
+  * 1.2: Account nicht anlegen, wird in 2 gemacht
 * news / outro Präsentation
+
+## Prepare
+
+```bash
+chainctl auth logout
+docker logout cgr.dev
+```
 
 
 ## invite users
