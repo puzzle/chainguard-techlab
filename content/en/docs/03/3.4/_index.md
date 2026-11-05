@@ -67,6 +67,38 @@ grype python-app:upstream
 grype python-app:cg
 ```
 
+Example output of the upstream image:
+
+```bash
+$ grype python-app:upstream
+ ✔ Loaded image     python-app:upstream
+ ✔ Parsed image     sha256:ae000a1f3ae6773750b71b87680c26fd7eabdaa429f5a439ce2be66c80508d9c
+ ✔ Cataloged contents     f53f824be8198d0643a0d09b01bf962dacf618d093030cbd9ee7cf2f7c613631
+   ├── ✔ Packages                        [486 packages]
+   ├── ✔ Executables                     [1,411 executables]
+   ├── ✔ File metadata                   [21,581 locations] 
+   └── ✔ File digests                    [21,581 files]
+ ✔ Scanned for vulnerabilities     [5234 vulnerability matches]
+   ├── by severity: 591 critical, 3806 high, 3211 medium, 461 low, 1106 negligible (2365 unknown)
+   └── by status:   9284 fixed, 2256 not-fixed, 6306 ignored
+```
+
+Example output of the Chainguard image:
+
+```bash
+$ grype python-app:cg | more
+ ✔ Loaded image      python-app:cg
+ ✔ Parsed image      sha256:4d2e40ae50d69ddc6a21da366cba2720c33495240c75e7c2468e1933fe28b893
+ ✔ Cataloged contents       9426a10cccf3995efaca48f57ffd248a53a47d8c34e27185b6807231eb989771
+   ├── ✔ Packages                        [44 packages]
+   ├── ✔ Executables                     [149 executables]
+   ├── ✔ File metadata                   [1,846 locations]
+   └── ✔ File digests                    [1,846 files]
+ ✔ Scanned for vulnerabilities     [4 vulnerability matches]
+   ├── by severity: 0 critical, 2 high, 1 medium, 1 low, 0 negligible
+   └── by status:   0 fixed, 4 not-fixed, 0 ignored
+```
+
 Compare the results:
 
 * How many vulnerabilities are found in each image?
