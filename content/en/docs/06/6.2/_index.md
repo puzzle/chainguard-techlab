@@ -36,7 +36,7 @@ As we see, this image runs as user `java` inside `/home/build` and has java vers
 As you know, running as root in production is a no-go. OpenShift will also prevent the container from starting.
 
 {{% alert title="Note" color="primary" %}}
-Exit the container with `ctrl+d`
+Exit the container with `CTRL+D`
 {{% /alert %}}
 
 Change the greetings inside `src/main/java/com/example/springboot/HelloController.java` to `Greetings from Chainguard!`.
@@ -96,5 +96,5 @@ Open your browser at http://localhost:8080/
 You should see: `Greetings from Chainguard!`
 
 {{% alert title="Note" color="primary" %}}
-Stop the container with `ctrl+c`
+Stop the container with `CTRL+C`
 {{% /alert %}}

@@ -170,7 +170,7 @@ Open your browser at http://localhost:8080/
 You should see: `Greetings from Chainguard!`
 
 {{% alert title="Note" color="primary" %}}
-Stop the app with `ctrl+c`
+Stop the app with `CTRL+C`
 {{% /alert %}}
 
 Copy your application jar for comparison:

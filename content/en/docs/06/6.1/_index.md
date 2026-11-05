@@ -70,7 +70,7 @@ java -version
 As we see, this image runs as user `root` inside root folder `/` and has java version 21.
 
 {{% alert title="Note" color="primary" %}}
-Exit the container with `ctrl+d`
+Exit the container with `CTRL+D`
 {{% /alert %}}
 
 
@@ -114,7 +114,7 @@ java -jar /spring-boot-0.0.1-SNAPSHOT.jar
 You should see log messages for a successful started application.
 
 {{% alert title="Note" color="primary" %}}
-Exit the container with `ctrl+c` and `ctrl+d`
+Exit the container with `CTRL+C` and `CTRL+D`
 {{% /alert %}}
 
 
@@ -128,5 +128,5 @@ Open your browser at http://localhost:8080/
 You should see: `Greetings from Spring Boot!`
 
 {{% alert title="Note" color="primary" %}}
-Stop the container with `ctrl+c`
+Stop the container with `CTRL+C`
 {{% /alert %}}

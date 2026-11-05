@@ -40,6 +40,62 @@ In this lab we migrate a small Python application step by step.
 For a complete list of things to check, see the [Migration Checklist](https://edu.chainguard.dev/chainguard/migration/migration-checklist/).
 
 
+### Analyze the official Python image
+
+Before we look at the Chainguard image, let's have a look at how the official Python image behaves.
+
+Check the entrypoint, the default command and the user of the image:
+
+```bash
+docker pull python:3.12
+docker inspect --format 'Entrypoint: {{.Config.Entrypoint}} Cmd: {{.Config.Cmd}} User: {{.Config.User}}' python:3.12
+```
+
+The image has no entrypoint, only the default command `python3`, and no user is set, so the container runs as `root`.
+
+Start the image without arguments:
+
+```bash
+docker run --rm -it python:3.12
+```
+
+This opens the Python interpreter (exit with `exit()`), because the default command `python3` is executed.
+
+Try to pass an argument:
+
+```bash
+docker run --rm python:3.12 --version
+```
+
+This fails, because the arguments replace the default command and Docker tries to execute `--version`. You have to pass the full command:
+
+```bash
+docker run --rm python:3.12 python --version
+```
+
+Run a shell command:
+
+```bash
+docker run --rm python:3.12 echo "in a shell"
+```
+
+This works, because the image contains a complete Debian system with a shell. You can also start an interactive shell and check the user and the installed tools:
+
+```bash
+docker run --rm -it python:3.12 /bin/bash
+```
+
+Inside the container:
+
+```bash
+whoami
+apt --version
+exit
+```
+
+Keep this behavior in mind, we will compare it with the Chainguard image in the section [Entrypoints](#entrypoints).
+
+
 ### Prepare the example application
 
 Create a new directory and move into it:
@@ -103,7 +159,7 @@ curl http://localhost:8080/
 ```
 
 {{% alert title="Note" color="primary" %}}
-Stop the container with `ctrl+c`
+Stop the container with `CTRL+C`
 {{% /alert %}}
 
 
@@ -115,7 +171,9 @@ Let's first have a look at how the Chainguard Python image behaves. The entrypoi
 docker run --rm -it cgr.dev/chainguard/python:latest
 ```
 
-This opens the Python interpreter (exit with `exit()`). Every argument you pass is handed over to `python`:
+This opens the Python interpreter (exit with `exit()`).
+
+Every argument you pass is handed over to `python`:
 
 ```bash
 docker run --rm cgr.dev/chainguard/python:latest --version
@@ -127,7 +185,9 @@ Try to run a shell command:
 docker run --rm cgr.dev/chainguard/python:latest echo "in a shell"
 ```
 
-This fails, because Python tries to open a file called `echo`. The image has no shell, so overwriting the entrypoint does not help either:
+This fails, because Python tries to open a file called `echo`.
+
+The image has no shell, so overwriting the entrypoint does not help either:
 
 ```bash
 docker run --rm --entrypoint /bin/sh cgr.dev/chainguard/python:latest
@@ -239,7 +299,7 @@ curl http://localhost:8080/
 ```
 
 {{% alert title="Note" color="primary" %}}
-Stop the container with `ctrl+c`
+Stop the container with `CTRL+C`
 {{% /alert %}}
 
 
