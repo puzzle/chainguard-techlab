@@ -124,17 +124,66 @@ The identity and its token are only valid for the duration of the techlab. If yo
 {{% /alert %}}
 
 
-#### Docker
+#### Registry authentication
 
-To access the Chainguard Images a docker login to the Chainguard registry has to be done.
+To pull Chainguard images, your container tool has to authenticate to the Chainguard registry `cgr.dev`.
 
-Authenticate to the Chainguard registry with:
+For more information on registry authentication, see [CGDocs](https://www.chainguard.dev/docs/chainguard/containers/registry/authenticating).
+
+
+##### Docker
+
+The recommended way for Docker is the chainctl credential helper. Configure it with:
 
 ```bash
 chainctl auth configure-docker
 ```
 
 You should get a `Login Succeeded` message.
+
+This adds chainctl as credential helper for `cgr.dev` to your Docker configuration (`~/.docker/config.json`). Docker calls chainctl whenever it needs a token, and a browser window opens when the token has to be refreshed. Pulls are associated with your user.
+
+
+##### Podman
+
+Podman (like Helm and other tools that log in to an OCI registry) does not use the chainctl credential helper. Use a pull token instead.
+
+Create a pull token, valid for 24 hours:
+
+```bash
+chainctl auth configure-docker --pull-token --ttl=24h
+```
+
+The output contains a `docker login` command:
+
+```
+docker login "cgr.dev" \
+  --username "<identity-id>" \
+  --password "<pull-token>"
+```
+
+The username is the Chainguard identity of the pull token, the password is the token itself. Store them in environment variables:
+
+```bash
+export CHAINGUARD_IDENTITY_ID=<identity-id>
+export CHAINGUARD_TOKEN=<pull-token>
+```
+
+Log in with Podman:
+
+```bash
+podman login cgr.dev --username "$CHAINGUARD_IDENTITY_ID" --password "$CHAINGUARD_TOKEN"
+```
+
+You should get a `Login Succeeded!` message.
+
+{{% alert title="Note" color="primary" %}}
+Do not add `--save`. It writes the pull token to your Docker configuration and replaces the credential helper for `cgr.dev` configured above.
+
+The same username and password work for `helm registry login` (see [lab 4](/docs/04/)) and registry mirroring tools such as Artifactory.
+{{% /alert %}}
+
+If you use Podman throughout this techlab, replace `docker` with `podman` in the commands.
 
 
 ### Updating chainctl
