@@ -11,9 +11,22 @@ Chainguard images are built to have as few known vulnerabilities (CVEs) as possi
 In this lab we scan the images from [lab 3.3](/docs/03/3.3/), verify the signature of a Chainguard image and scan its SBOM.
 
 
-### Install the tools
+### Tools
 
-Install [Grype](https://github.com/anchore/grype) as vulnerability scanner, see the [Grype tutorial](https://edu.chainguard.dev/chainguard/chainguard-images/staying-secure/working-with-scanners/grype-tutorial/):
+We use the following tools. All of them are available as official container images, so you can run them with Docker without installing them. For each step, the command is shown for Docker and for a local installation.
+
+| Tool | Purpose | Container image |
+| --- | --- | --- |
+| [Grype](https://github.com/anchore/grype) | vulnerability scanner | `anchore/grype` |
+| [cosign](https://docs.sigstore.dev/) | verify signatures and attestations | `ghcr.io/sigstore/cosign/cosign` |
+| [jq](https://jqlang.org/) | format and filter JSON output | `ghcr.io/jqlang/jq` |
+
+
+#### Install the tools locally (optional)
+
+Skip this section if you use the container images.
+
+Install Grype, see the [Grype tutorial](https://edu.chainguard.dev/chainguard/chainguard-images/staying-secure/working-with-scanners/grype-tutorial/):
 
 ```bash
 curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b ~/.local/bin
@@ -25,23 +38,33 @@ Install [cosign](https://docs.sigstore.dev/cosign/system_config/installation/), 
 brew install cosign
 ```
 
-We also use [jq](https://jqlang.org/) to format JSON output.
+Install jq with the package manager of your system, for example:
+
+```bash
+brew install jq
+```
 
 
 ### Scan images
 
-Scan the upstream image and the Chainguard image from [lab 3.3](/docs/03/3.3/):
+Scan the upstream image and the Chainguard image from [lab 3.3](/docs/03/3.3/).
+
+With Docker:
+
+```bash
+docker run --rm --volume /var/run/docker.sock:/var/run/docker.sock anchore/grype python-app:upstream
+docker run --rm --volume /var/run/docker.sock:/var/run/docker.sock anchore/grype python-app:cg
+```
+
+{{% alert title="Note" color="primary" %}}
+The Docker socket is mounted into the container, so that Grype can access the images on your host.
+{{% /alert %}}
+
+With a local installation:
 
 ```bash
 grype python-app:upstream
 grype python-app:cg
-```
-
-If you don't want to install Grype, you can use the Grype container:
-
-```bash
-docker run --rm -it --volume /var/run/docker.sock:/var/run/docker.sock anchore/grype python-app:upstream
-docker run --rm -it --volume /var/run/docker.sock:/var/run/docker.sock anchore/grype python-app:cg
 ```
 
 Compare the results:
@@ -49,7 +72,15 @@ Compare the results:
 * How many vulnerabilities are found in each image?
 * Where do the vulnerabilities of the upstream image come from (base image, OS packages, Python packages)?
 
-To only show vulnerabilities for which a fix is available, use:
+To only show vulnerabilities for which a fix is available, add `--only-fixed`.
+
+With Docker:
+
+```bash
+docker run --rm --volume /var/run/docker.sock:/var/run/docker.sock anchore/grype python-app:upstream --only-fixed
+```
+
+With a local installation:
 
 ```bash
 grype python-app:upstream --only-fixed
@@ -64,7 +95,18 @@ Other scanners like [Trivy](https://trivy.dev/) or [Docker Scout](https://docs.d
 
 Every Chainguard image is signed during the build. With `cosign` we can verify that an image was built by Chainguard and was not modified afterwards.
 
-The public images in `cgr.dev/chainguard` are signed by the Chainguard release workflow on GitHub:
+The public images in `cgr.dev/chainguard` are signed by the Chainguard release workflow on GitHub.
+
+With Docker:
+
+```bash
+docker run --rm ghcr.io/sigstore/cosign/cosign:latest verify \
+  --certificate-oidc-issuer=https://token.actions.githubusercontent.com \
+  --certificate-identity=https://github.com/chainguard-images/images/.github/workflows/release.yaml@refs/heads/main \
+  cgr.dev/chainguard/python:latest | docker run --rm -i ghcr.io/jqlang/jq .
+```
+
+With a local installation:
 
 ```bash
 cosign verify \
@@ -86,8 +128,15 @@ Download the SBOM of the Chainguard Python image as described in [lab 3.2](/docs
 
 Also list and count the packages.
 
+You can scan the SBOM directly, without pulling the image.
 
-You can scan the SBOM directly, without pulling the image:
+With Docker, the current directory is mounted into the container:
+
+```bash
+docker run --rm --volume "$PWD":/work --workdir /work anchore/grype sbom:./python-sbom.json
+```
+
+With a local installation:
 
 ```bash
 grype sbom:./python-sbom.json
