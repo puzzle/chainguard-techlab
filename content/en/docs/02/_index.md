@@ -99,16 +99,13 @@ chainctl version
 
 For this techlab, you need a Chainguard account.
 
-TODO
-
 * click on invite link
 * enter email address of invite
 * create account
 * enter code from email
-* 2fa
-* any name for company
+* activate 2FA
 * join org (use invite code from invite)
-* you should see `chainguard.dev-partners` org
+* you should then see `chainguard.dev-partners` org
 
 Log in with chainctl:
 

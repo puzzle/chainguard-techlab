@@ -7,10 +7,10 @@
   * so belassen
 * [ ] 2. Auth ausarbeiten (Ela)
 * [ ] TODOs anschauen
-* [ ] SBOMs 2x?
+* [x] SBOMs 2x?
 * [x] rename additional to advanced
 * [x] 3.4 moove to advanced
-* [ ] 4. helm charts ausarbeiten, wie finden, wie holen, images dazu? (Ela)
+* [x] 4. helm charts ausarbeiten, wie finden, wie holen, images dazu? (Ela)
 * [x] moove 5.1 to 5.2
 * [ ] 5.1 wieso brauchen wir libs? wieso von Chinguard (SLSA oder Scanned / Ela)
 * [ ] 5.2 ausarbeiten
