@@ -44,6 +44,22 @@ Install jq with the package manager of your system, for example:
 brew install jq
 ```
 
+### Compare Image size
+
+Get the size of the images from [lab 3.3](/docs/03/3.3/).
+
+```bash
+docker image inspect --format '{{.Size}}' python-app:upstream | numfmt --to=iec
+```
+
+```bash
+docker image inspect --format '{{.Size}}' python-app:cg | numfmt --to=iec
+```
+
+The upstream image is about 1.1G and the Chainguard image 85M (less than 10% of upstream)
+
+Why is the size that differnet?
+
 
 ### Scan images
 
@@ -86,7 +102,7 @@ $ grype python-app:upstream
 Example output of the Chainguard image:
 
 ```bash
-$ grype python-app:cg | more
+$ grype python-app:cg
  ✔ Loaded image      python-app:cg
  ✔ Parsed image      sha256:4d2e40ae50d69ddc6a21da366cba2720c33495240c75e7c2468e1933fe28b893
  ✔ Cataloged contents       9426a10cccf3995efaca48f57ffd248a53a47d8c34e27185b6807231eb989771
