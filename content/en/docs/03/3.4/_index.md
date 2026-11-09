@@ -44,6 +44,7 @@ Install jq with the package manager of your system, for example:
 brew install jq
 ```
 
+
 ### Compare Image size
 
 Get the size of the images from [lab 3.3](/docs/03/3.3/).

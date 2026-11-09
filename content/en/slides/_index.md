@@ -8,10 +8,10 @@ menu:
 
 {{< blocks/section color="light">}}
 
-{{% blocks/feature icon="fa-chalkboard-teacher" url="Chainguard-Puzzle-Training-1-Intro.pdf" title="Intro to Chainguard" %}}
+{{% blocks/feature icon="fa-chalkboard-teacher" url="TechLab-01-Intro.pdf" title="Introduction to Chainguard" %}}
 {{% /blocks/feature %}}
 
-{{% blocks/feature icon="fa-chalkboard-teacher" url="Chainguard-Puzzle-Training-2-Extended.pdf" title="Chainguard Concepts" %}}
+{{% blocks/feature icon="fa-chalkboard-teacher" url="TechLab-02-WrapUp.pdf" title="Chainguard Updates" %}}
 {{% /blocks/feature %}}
 
 {{< /blocks/section >}}
